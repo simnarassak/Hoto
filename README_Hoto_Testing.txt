@@ -39,8 +39,3 @@ XGBoost metrics can vary slightly across library versions.
 - `hoto/model_lab.py` — queue + evaluation artifacts
 - `hoto/infer.py` — score saved models 
 - `app/streamlit_app.py` — public UI 
-
-## Static security note
-
-The original notebook conversion was scanned for network requests, shell
-execution, dynamic `eval`/`exec`, and encoded payload decoding.This is a static review.
