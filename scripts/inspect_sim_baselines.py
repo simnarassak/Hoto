@@ -1,30 +1,15 @@
 import pandas as pd
-
-c = pd.read_csv(
-    "data/hoto_claims_synthetic.csv",
-    parse_dates=["submission_date", "decision_date"],
-)
-p = pd.read_csv("data/hoto_providers.csv")
-
-print("regions", c["claimant_region"].value_counts().to_dict())
-print("months", c["submission_date"].dt.to_period("M").nunique())
-print(
-    "claims/month mean",
-    c.groupby(c["submission_date"].dt.to_period("M")).size().mean(),
-)
-g = (
-    c.groupby(
-        ["claimant_region", c["submission_date"].dt.to_period("M").astype(str)]
-    )
-    .size()
-    .groupby(level=0)
-    .mean()
-)
-print("mean claims per month by region")
+c = pd.read_csv('data/hoto_claims_synthetic.csv', parse_dates=['submission_date', 'decision_date'])
+p = pd.read_csv('data/hoto_providers.csv')
+print('regions', c['claimant_region'].value_counts().to_dict())
+print('months', c['submission_date'].dt.to_period('M').nunique())
+print('claims/month mean', c.groupby(c['submission_date'].dt.to_period('M')).size().mean())
+g = c.groupby(['claimant_region', c['submission_date'].dt.to_period('M').astype(str)]).size().groupby(level=0).mean()
+print('mean claims per month by region')
 print(g)
-print("provider capacity sum by region")
-print(p.groupby("region")["service_capacity"].sum())
-print("capacity describe")
-print(p["service_capacity"].describe())
-approved = c.loc[c["claim_status"].eq("Approved"), "approved_amount"]
-print("mean approved amount", approved.mean())
+print('provider capacity sum by region')
+print(p.groupby('region')['service_capacity'].sum())
+print('capacity describe')
+print(p['service_capacity'].describe())
+approved = c.loc[c['claim_status'].eq('Approved'), 'approved_amount']
+print('mean approved amount', approved.mean())
