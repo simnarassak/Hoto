@@ -37,13 +37,10 @@ XGBoost metrics can vary slightly across library versions.
 - `hoto/features.py` — feature tables
 - `hoto/train.py` — model fitting
 - `hoto/model_lab.py` — queue + evaluation artifacts
-- `hoto/infer.py` — score saved models (app-safe)
-- `app/streamlit_app.py` — public UI (no auth)
+- `hoto/infer.py` — score saved models 
+- `app/streamlit_app.py` — public UI 
 
 ## Static security note
 
 The original notebook conversion was scanned for network requests, shell
-execution, dynamic `eval`/`exec`, and encoded payload decoding. No matches were
-found in executable source. This is a static review, not a commercial antivirus
-guarantee. Run your organisation's endpoint scanner before sharing or executing
-files in a work environment.
+execution, dynamic `eval`/`exec`, and encoded payload decoding.This is a static review.
