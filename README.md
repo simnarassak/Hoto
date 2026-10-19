@@ -12,17 +12,17 @@ short_description: Synthetic claims risk triage demo (ensemble, rules, provider 
 
 Public sandbox for exploring synthetic claims risk scoring. Data and labels are
 fully synthetic. Model scores are for triage demos and learning — not proof of
-fraud or real claim decisions. **No authentication.**
+fraud or real claim decisions.
 
 ## App structure
 
 1. **Home** — what this is + Hoto world narrative (people → claims → providers → YoY approvals)  
 2. **Risk lab** — ensemble queue, threshold, provider risk charts  
-3. **Case explain** — timeline + Option C contribution toggle (SHAP vs linear) with custom Plotly force/waterfall  
+3. **Case explain** — timeline and what influence the model to predict a specific outcome
 4. **Model lab** — metrics and scenarios  
-5. **Simulation** — 2D regional sandbox: economic stress, flood, earthquake, pandemic, storm, tsunami, all-region stress, plus Normal/Tight/Very tight capacity modes (rules-based, not ML)  
+5. **Simulation** — 2D regional sandbox: economic stress, flood, earthquake, pandemic, storm, tsunami, all-region stress, plus Normal/Tight/Very tight capacity modes ( this a rule based simulation, not ML)  
 
-## What is new (product / modeling dimensions)
+## What is the product / modeling dimensions
 
 1. **Ensemble triage score** — blends XGBoost + logistic + normalized anomaly  
 2. **Transparent rule hits** — velocity, duplicate signature, provider amount spike  
@@ -37,7 +37,7 @@ Hoto/
   hoto/                 # core package
   app/
     streamlit_app.py    # Streamlit Community Cloud entry
-  app.py                # Hugging Face Spaces (Gradio) entry
+  app.py                # Hugging Face Spaces (Gradio) entry (Not published yet)
   hoto_pipeline.py      # thin training CLI wrapper
   requirements.txt
   data/                 # generated artifacts
@@ -79,32 +79,6 @@ Gradio (same as HF Spaces):
 ```bash
 python app.py
 ```
-
-If `data/` / `models/` are missing, apps auto-build a **demo-scale** world on first boot.
-
-## Deploy from your personal GitHub
-
-### 1) Hugging Face Spaces (Gradio)
-
-1. Push this repo to GitHub.
-2. Create a Space → SDK **Gradio** → link the GitHub repo.
-3. HF reads `README.md` frontmatter (`sdk: gradio`, `app_file: app.py`).
-4. Free-tier tip: either commit demo artifacts from `python -m hoto --demo`,
-   or let Spaces cold-start call `ensure_artifacts()` (demo scale).
-
-### 2) Streamlit Community Cloud
-
-1. Push the same GitHub repo.
-2. New app → select repo → Main file path: `app/streamlit_app.py`.
-3. Python version 3.10+ recommended.
-4. Same artifact guidance as above.
-
-### Artifact size tip
-
-Full 100k-population outputs can be large for git. Prefer:
-
-- commit **demo** artifacts (`python -m hoto --demo`), or
-- omit `data/` + `models/` from git and let cloud boot build demo scale.
 
 ## Inference API
 
