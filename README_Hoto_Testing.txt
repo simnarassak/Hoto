@@ -12,7 +12,7 @@ Outputs (relative to the directory from which you run the pipeline):
 **Important:** training and serving are separated.
 - Train with `python -m hoto` (or `python hoto_pipeline.py`)
 - Serve the public demo with `streamlit run app/streamlit_app.py`
-- App code should import `hoto.infer`, not re-run the training pipeline
+- App code should import `hoto.infer`, donot re-run the training pipeline (as the population size is 100K)
 
 ## Test in a clean folder
 
