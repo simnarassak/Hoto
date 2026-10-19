@@ -5,7 +5,7 @@ Prefer:
     python -m hoto
     python -m hoto.pipeline
 
-This file no longer contains the notebook body. The implementation lives in
+The implementation lives in
 the `hoto` package so the public app can import inference helpers without
 retraining models.
 """
