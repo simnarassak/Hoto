@@ -274,7 +274,7 @@ with tab_case:
 
             st.subheader("Contribution force chart")
             st.caption(
-                "Custom Plotly waterfall (not shap.force_plot). "
+                "Custom Plotly waterfall. "
                 "Explanation supports triage understanding only."
             )
             try:
@@ -357,7 +357,7 @@ with tab_sim:
     st.header("Simulation")
     st.caption(
         "Synthetic policy sandbox: hazards, all-region stress, and capacity modes. "
-        "Baseline versus scenario over months. Rules are illustrative — not ML forecasts."
+        "Baseline versus scenario over months. Rules based model — not a ML forecast."
     )
 
     claims = _load_csv("hoto_claims_synthetic.csv")
