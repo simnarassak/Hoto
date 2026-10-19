@@ -197,7 +197,7 @@ def region_impact_rank_bars(summary, value_col="abs_change_claims_demand"):
 def region_impact_map(summary, value_col="mean_pct_change_demand"):
     """
     Combined Plotly view for Gradio / smoke tests:
-    KPI-style annotations + ranked bars (replaces the old block map).
+    KPI-style annotations + ranked bars.
     """
     if summary is None or summary.empty:
         return _empty("No simulation results")
