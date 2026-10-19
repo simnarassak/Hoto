@@ -74,11 +74,23 @@ Streamlit:
 streamlit run app/streamlit_app.py
 ```
 
-Gradio (same as HF Spaces):
+Gradio (optional / deferred — not required for Streamlit Cloud):
 
 ```bash
+python -m pip install gradio==4.44.1
 python app.py
 ```
+
+If `data/` / `models/` are missing, apps auto-build a **demo-scale** world on first boot.
+
+## Deploy (Streamlit Community Cloud)
+
+1. Main file path: `app/streamlit_app.py`
+2. In **Advanced settings**, set **Python version to 3.12** (not 3.13/3.14)
+3. App URL example: `hoto-sims.streamlit.app`
+
+If the app was already deployed on the wrong Python version: delete it, then
+redeploy with the same subdomain and choose **3.12** again.
 
 ## Inference API
 
