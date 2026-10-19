@@ -1,5 +1,3 @@
-"""Option C: contribution numbers + custom Plotly force/waterfall chart."""
-
 import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
