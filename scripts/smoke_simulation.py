@@ -6,7 +6,7 @@ from hoto.simulation_config import default_config, hazard_choices
 def main():
     claims, providers = load_sim_inputs("data")
 
-    # Economic stress: Industrial only, ~2.5% demand lift
+                                                         
     economic = run_baseline_and_scenario(
         claims,
         providers,
@@ -26,7 +26,7 @@ def main():
     ]
     assert (other.abs() < 1e-9).all()
 
-    # All-region stress: every region moves
+                                           
     all_region = run_baseline_and_scenario(
         claims,
         providers,
@@ -39,7 +39,7 @@ def main():
     all_summary = regional_impact_summary(all_region["comparison"])
     assert (all_summary["abs_change_claims_demand"] > 0).all()
 
-    # Tsunami + very tight capacity should create backlog on Coastal
+                                                                    
     tsunami = run_baseline_and_scenario(
         claims,
         providers,
@@ -55,7 +55,7 @@ def main():
     ]
     assert coastal["backlog"].max() > 0
 
-    # Every hazard type runs
+                            
     for hazard in hazard_choices():
         result = run_baseline_and_scenario(
             claims,

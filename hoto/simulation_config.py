@@ -4,8 +4,6 @@ from dataclasses import asdict, dataclass, field, replace
 
 from hoto.config import REGIONS, WORLD
 
-
-# Illustrative hazard profiles (synthetic design choices, not empirical estimates).
 HAZARD_PROFILES = {
     "Economic stress": {
         "description": "Regional socioeconomic pressure shock.",
@@ -89,7 +87,6 @@ CAPACITY_MODES = {
 
 REGION_CHOICES = tuple(REGIONS.keys()) + ("All profile regions",)
 
-
 @dataclass
 class SimulationConfig:
     """Illustrative synthetic assumptions — not real-world forecasts."""
@@ -130,7 +127,6 @@ class SimulationConfig:
         if self.shocked_region == "All profile regions":
             return tuple(r for r in defaults if r in self.regions)
 
-        # User-picked single region (still valid for most hazards).
         if self.shocked_region in self.regions:
             return (self.shocked_region,)
         return tuple(r for r in defaults if r in self.regions)
@@ -174,7 +170,6 @@ class SimulationConfig:
         payload["effective_beta"] = self.effective_beta()
         return payload
 
-
 def default_config(**overrides):
     cfg = SimulationConfig()
     if "hazard_type" in overrides and "stress_shock_pct" not in overrides:
@@ -190,10 +185,8 @@ def default_config(**overrides):
         cfg = replace(cfg, **overrides)
     return cfg
 
-
 def hazard_choices():
     return list(HAZARD_PROFILES.keys())
-
 
 def capacity_mode_choices():
     return list(CAPACITY_MODES.keys())

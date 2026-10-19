@@ -5,7 +5,6 @@ from pathlib import Path
 import numpy as np
 import pandas as pd
 
-
 CLAIM_FEATURE_COLUMNS = [
     "claim_id",
     "claim_type",
@@ -64,7 +63,6 @@ PAYMENT_MODEL_FEATURES = [
     "prior_net_paid_to_approved_ratio",
 ]
 
-
 def _prior_claims_30d(claim_data):
     claim_data = claim_data.copy()
     claim_data["prior_claims_30d"] = 0
@@ -82,7 +80,6 @@ def _prior_claims_30d(claim_data):
         claim_data.loc[positions, "prior_claims_30d"] = counts
 
     return claim_data
-
 
 def build_claim_features(claims_synthetic, fraud_labels, amount_median=None):
     claim_data = claims_synthetic.copy()
@@ -122,7 +119,6 @@ def build_claim_features(claims_synthetic, fraud_labels, amount_median=None):
         claim_data["provider_prior_claim_count"] > 0
     ).astype(int)
 
-    # Prefer a caller-supplied train-only median to avoid leakage.
     if amount_median is None:
         amount_median = float(claim_data["claimed_amount"].median())
     claim_data["provider_prior_mean_amount"] = (
@@ -160,7 +156,6 @@ def build_claim_features(claims_synthetic, fraud_labels, amount_median=None):
         "claim_targets": claim_targets,
         "amount_median": amount_median,
     }
-
 
 def build_payment_features(payments_synthetic, claims_synthetic, fraud_labels):
     payment_data = payments_synthetic.copy()
@@ -244,7 +239,6 @@ def build_payment_features(payments_synthetic, claims_synthetic, fraud_labels):
         "payment_metadata": payment_metadata,
         "payment_targets": payment_targets,
     }
-
 
 def validate_and_save_features(claim_bundle, payment_bundle, data_dir):
     claim_features = claim_bundle["claim_features"]

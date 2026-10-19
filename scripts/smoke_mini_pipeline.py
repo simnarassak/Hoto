@@ -9,7 +9,7 @@ import hoto.config as cfg
 import hoto.data_gen as data_gen
 import hoto.scenarios as scenarios
 
-# Mutate shared config in place (modules import these by name).
+                                                               
 cfg.WORLD["population"] = 2000
 cfg.N_PROVIDERS = 50
 cfg.N_CLAIMS = 500

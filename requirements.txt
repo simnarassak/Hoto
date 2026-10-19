@@ -1,5 +1,3 @@
-# Streamlit Community Cloud: Advanced settings → Python 3.12
-# (avoid 3.13/3.14 — Pillow/pandas lack wheels and fail source builds).
 pandas==2.3.2
 numpy==1.26.4
 scikit-learn==1.5.2

@@ -1,8 +1,4 @@
-"""
-Public Hoto demo (Streamlit Community Cloud).
-
-IA: Home | Risk lab | Case explain | Model lab | Simulation
-"""
+"""Public Hoto Streamlit demo."""
 
 from pathlib import Path
 import sys
@@ -18,13 +14,11 @@ DATA_DIR = ROOT / "data"
 MODELS_DIR = ROOT / "models"
 ISLAND_MAP_PATH = ROOT / "images" / "Hoto_ An_Isometric_Island_Map.png"
 
-
 @st.cache_resource(show_spinner="Preparing Hoto demo artifacts...")
 def _boot():
     from hoto.app_data import ensure_app_ready
 
     return ensure_app_ready(DATA_DIR, MODELS_DIR)
-
 
 @st.cache_resource(show_spinner="Loading claim models...")
 def _claim_models():
@@ -32,14 +26,12 @@ def _claim_models():
 
     return load_claim_models(MODELS_DIR)
 
-
 @st.cache_data(show_spinner=False)
 def _load_csv(name):
     path = DATA_DIR / name
     if not path.exists():
         return None
     return pd.read_csv(path)
-
 
 @st.cache_data(show_spinner="Scoring claims...")
 def _live_scores():
@@ -51,7 +43,6 @@ def _live_scores():
         models=_claim_models(),
     )
     return scored
-
 
 st.set_page_config(page_title="Hoto Claims Risk Demo", layout="wide")
 boot = _boot()
@@ -76,7 +67,7 @@ with tab_home:
             st.warning(f"Island map not found at `{ISLAND_MAP_PATH}`.")
 
     with copy_col:
-        # Nudge copy downward so it aligns with the map body, not the title row.
+
         st.markdown("<div style='height: 3.5rem;'></div>", unsafe_allow_html=True)
         st.markdown(
             """
@@ -206,10 +197,7 @@ with tab_case:
     from hoto.features import CLAIM_MODEL_CATEGORICAL, CLAIM_MODEL_NUMERIC
 
     st.header("Case explain")
-    st.caption(
-        "Inspect one claim's timeline and a custom force-style contribution chart. "
-        "Toggle SHAP vs simple linear contributions."
-    )
+    st.caption("Inspect one claim's timeline and contribution chart.")
 
     scored = _live_scores()
     claims = _load_csv("hoto_claims_synthetic.csv")
@@ -229,15 +217,6 @@ with tab_case:
     manual_id = st.text_input("Or paste a claim ID", value="")
     if manual_id.strip():
         claim_id = manual_id.strip()
-
-    method = st.radio(
-        "Contribution method",
-        [
-            "Model contributions (SHAP)",
-            "Simple linear contributions",
-        ],
-        horizontal=True,
-    )
 
     if claim_id:
         score_row = scored.loc[scored["claim_id"] == claim_id]
@@ -273,10 +252,6 @@ with tab_case:
                 )
 
             st.subheader("Contribution force chart")
-            st.caption(
-                "Custom Plotly waterfall. "
-                "Explanation supports triage understanding only."
-            )
             try:
                 models = _claim_models()
                 feature_cols = CLAIM_MODEL_CATEGORICAL + CLAIM_MODEL_NUMERIC
@@ -286,14 +261,14 @@ with tab_case:
                 else:
                     explanation = explain_claim_contributions(
                         row.iloc[0],
-                        method=method,
+                        method="Model contributions",
                         xgb_pipeline=models["xgboost"],
                         logistic_pipeline=models["logistic"],
                         top_k=12,
                     )
                     fig = force_waterfall_figure(
                         explanation,
-                        title=f"{explanation['method']} for {claim_id}",
+                        title=f"Contributions for {claim_id}",
                     )
                     st.plotly_chart(fig, use_container_width=True)
                     st.dataframe(

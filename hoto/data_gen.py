@@ -23,14 +23,12 @@ from hoto.config import (
     WORLD,
 )
 
-
 def _exact_category_values(n_people, distribution, rng):
     values = []
     for label, proportion in distribution.items():
         count = round(n_people * proportion)
         values.extend([label] * count)
 
-    # Rounding can overshoot; trim or pad with the last category.
     if len(values) > n_people:
         values = values[:n_people]
     elif len(values) < n_people:
@@ -38,7 +36,6 @@ def _exact_category_values(n_people, distribution, rng):
 
     rng.shuffle(values)
     return values
-
 
 def generate_population(seed=None):
     seed = WORLD["random_seed"] if seed is None else seed
@@ -70,7 +67,6 @@ def generate_population(seed=None):
     _validate_population(people)
     return people
 
-
 def _validate_population(people):
     n_people = WORLD["population"]
     assert len(people) == n_people
@@ -98,12 +94,10 @@ def _validate_population(people):
     assert people["region"].isin(REGIONS.keys()).all()
     assert people["age_band"].isin(AGE_BANDS.keys()).all()
 
-    # Exact expected counts when proportions multiply cleanly.
     if sum(expected_groups.values()) == n_people:
         assert actual_groups == expected_groups
     if sum(expected_regions.values()) == n_people:
         assert actual_regions == expected_regions
-
 
 def generate_providers(rng):
     providers = pd.DataFrame({
@@ -124,7 +118,6 @@ def generate_providers(rng):
         ["Active", "Inactive"], size=N_PROVIDERS, p=[0.95, 0.05]
     )
     return providers
-
 
 def generate_claims(people, providers, rng):
 
@@ -174,7 +167,6 @@ def generate_claims(people, providers, rng):
     }
     all_provider_ids = providers["provider_id"].to_numpy()
 
-    # Vectorised regional provider assignment
     selected_providers = np.empty(N_CLAIMS, dtype=object)
     for region, regional_ids in provider_ids_by_region.items():
         mask = claims["claimant_region"].eq(region).to_numpy()
@@ -201,7 +193,6 @@ def generate_claims(people, providers, rng):
     _validate_claims(claims, people, providers)
     return claims
 
-
 def _validate_claims(claims, people, providers):
     assert claims["claim_id"].is_unique
     assert providers["provider_id"].is_unique
@@ -217,7 +208,6 @@ def _validate_claims(claims, people, providers):
         claims.loc[decided, "decision_date"]
         >= claims.loc[decided, "submission_date"]
     ).all()
-
 
 def generate_payments(claims, seed=None):
     seed = WORLD["random_seed"] + 2 if seed is None else seed
@@ -298,7 +288,6 @@ def generate_payments(claims, seed=None):
         ])
     payments["payment_date"] = pd.to_datetime(payments["payment_date"])
 
-    # Reversals on ~1% of paid instalments
     paid_payments = payments.loc[payments["payment_status"].eq("Paid")]
     n_reversals = int(round(len(paid_payments) * 0.01))
     if n_reversals > 0:
@@ -329,7 +318,6 @@ def generate_payments(claims, seed=None):
 
     payments["payment_date"] = pd.to_datetime(payments["payment_date"])
     return claims, payments
-
 
 def generate_claim_events(claims, payments):
     event_rows = []
@@ -415,7 +403,6 @@ def generate_claim_events(claims, payments):
     ).reset_index(drop=True)
     return claim_events
 
-
 def validate_payments_and_events(claims, payments, claim_events):
     assert payments["payment_id"].is_unique
     assert claim_events["event_id"].is_unique
@@ -463,7 +450,6 @@ def validate_payments_and_events(claims, payments, claim_events):
     for claim_id, net_amount in net_paid.items():
         assert net_amount <= approved_amount_lookup.loc[claim_id] + 0.01
 
-
 def run_integrated_quality_gate(people, providers, claims, payments, claim_events):
     assert people["person_id"].is_unique
     assert providers["provider_id"].is_unique
@@ -509,7 +495,6 @@ def run_integrated_quality_gate(people, providers, claims, payments, claim_event
     assert payment_events["payment_id"].isin(payments["payment_id"]).all()
     return len(reversals)
 
-
 def save_baseline_datasets(
     people, providers, claims, payments, claim_events, data_dir
 ):
@@ -521,7 +506,6 @@ def save_baseline_datasets(
     payments.to_csv(data_dir / "hoto_payments.csv", index=False)
     claim_events.to_csv(data_dir / "hoto_claim_events.csv", index=False)
 
-
 def generate_baseline_world(seed=None, data_dir=None):
     """Generate and persist the clean synthetic world."""
     from hoto.config import DATA_DIR
@@ -529,7 +513,6 @@ def generate_baseline_world(seed=None, data_dir=None):
     base_seed = WORLD["random_seed"] if seed is None else seed
     people = generate_population(seed=base_seed)
 
-    # Providers and claims share one RNG stream (matches original notebook).
     ecosystem_rng = np.random.default_rng(base_seed + 1)
     providers = generate_providers(ecosystem_rng)
     claims = generate_claims(people, providers, ecosystem_rng)

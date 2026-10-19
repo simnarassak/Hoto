@@ -1,8 +1,4 @@
-"""
-Hugging Face Spaces entrypoint (Gradio).
-
-IA: Home | Risk lab | Case explain | Model lab | Simulation
-"""
+"""Gradio entrypoint for Hoto."""
 
 from pathlib import Path
 import sys
@@ -72,7 +68,6 @@ _SAMPLE_IDS = (
     .tolist()
 )
 
-
 def refresh_risk(threshold, top_n, score_column):
     threshold = float(threshold)
     top_n = int(top_n)
@@ -94,8 +89,7 @@ def refresh_risk(threshold, top_n, score_column):
     )
     return summary, hist, bubble, view, _PROVIDER_RISK.head(top_n)
 
-
-def explain_case(claim_pick, claim_manual, method):
+def explain_case(claim_pick, claim_manual):
     claim_id = (
         claim_manual.strip()
         if claim_manual and claim_manual.strip()
@@ -132,21 +126,21 @@ def explain_case(claim_pick, claim_manual, method):
         if len(row) == 1:
             explanation = explain_claim_contributions(
                 row.iloc[0],
-                method=method,
+                method="Model contributions",
                 xgb_pipeline=_MODELS["xgboost"],
                 logistic_pipeline=_MODELS["logistic"],
                 top_k=12,
             )
             fig = force_waterfall_figure(
                 explanation,
-                title=f"{explanation['method']} for {claim_id}",
+                title=f"Contributions for {claim_id}",
             )
             contrib_tbl = explanation["contributions"]
     except Exception as exc:
         contrib_tbl = pd.DataFrame({"error": [str(exc)]})
 
     return (
-        f"Loaded claim {claim_id} ({method})",
+        f"Loaded claim {claim_id}",
         score_row,
         claim_tbl,
         pay_tbl,
@@ -154,7 +148,6 @@ def explain_case(claim_pick, claim_manual, method):
         fig,
         contrib_tbl,
     )
-
 
 with gr.Blocks(title="Hoto Claims Risk Demo") as demo:
     gr.Markdown("# Hoto Claims Risk Demo")
@@ -262,25 +255,17 @@ A world created using synthetic data for learning; it showcases risk analysis of
                 label="High-risk sample claim",
             )
             claim_manual = gr.Textbox(label="Or paste claim ID")
-            method = gr.Radio(
-                choices=[
-                    "Model contributions (SHAP)",
-                    "Simple linear contributions",
-                ],
-                value="Model contributions (SHAP)",
-                label="Contribution method",
-            )
         case_btn = gr.Button("Explain case")
         case_status = gr.Markdown()
         score_out = gr.Dataframe(label="Scores / rules")
         claim_out = gr.Dataframe(label="Claim")
         pay_out = gr.Dataframe(label="Payments")
         event_out = gr.Dataframe(label="Event timeline")
-        force_plot = gr.Plot(label="Custom force-style contributions")
+        force_plot = gr.Plot(label="Contribution chart")
         contrib_out = gr.Dataframe(label="Contribution table")
         case_btn.click(
             explain_case,
-            inputs=[claim_pick, claim_manual, method],
+            inputs=[claim_pick, claim_manual],
             outputs=[
                 case_status,
                 score_out,
@@ -422,7 +407,6 @@ A world created using synthetic data for learning; it showcases risk analysis of
         ]
         sim_btn.click(run_sim, inputs=sim_inputs, outputs=sim_outputs)
         demo.load(run_sim, inputs=sim_inputs, outputs=sim_outputs)
-
 
 if __name__ == "__main__":
     demo.launch()

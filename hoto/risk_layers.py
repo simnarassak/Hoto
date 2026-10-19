@@ -13,7 +13,6 @@ from hoto.config import (
     RULE_PROVIDER_AMOUNT_MULTIPLIER,
 )
 
-
 def _normalize_series(values):
     values = np.asarray(values, dtype=float)
     lo = np.nanmin(values)
@@ -21,7 +20,6 @@ def _normalize_series(values):
     if not np.isfinite(lo) or not np.isfinite(hi) or hi <= lo:
         return np.zeros(len(values), dtype=float)
     return (values - lo) / (hi - lo)
-
 
 def add_ensemble_score(scored, weights=None):
     """Add a blended triage score from XGBoost, logistic, and anomaly."""
@@ -35,7 +33,6 @@ def add_ensemble_score(scored, weights=None):
         + weights["anomaly"] * anomaly_norm
     )
     return result
-
 
 def add_claim_rule_hits(claim_features):
     """Transparent rule signals for claims (complement ML, not replace it)."""
@@ -57,7 +54,6 @@ def add_claim_rule_hits(claim_features):
     )
     return result
 
-
 def add_payment_rule_hits(payment_features):
     """Transparent rule signals for payments."""
     result = payment_features.copy()
@@ -71,7 +67,6 @@ def add_payment_rule_hits(payment_features):
         result["rule_near_full_payout"] + result["rule_repeat_same_amount"]
     )
     return result
-
 
 def build_provider_risk(claim_scored, providers=None, data_dir=None):
     """
@@ -130,7 +125,6 @@ def build_provider_risk(claim_scored, providers=None, data_dir=None):
 
     return grouped
 
-
 def enrich_scored_claims(claim_features, scored):
     with_rules = add_claim_rule_hits(claim_features)
     extra_cols = [
@@ -145,7 +139,6 @@ def enrich_scored_claims(claim_features, scored):
     keep = ["claim_id"] + [c for c in extra_cols if c in with_rules.columns]
     merged = scored.merge(with_rules[keep], on="claim_id", how="left")
     return add_ensemble_score(merged)
-
 
 def enrich_scored_payments(payment_features, scored):
     with_rules = add_payment_rule_hits(payment_features)

@@ -2,7 +2,6 @@
 
 import numpy as np
 
-
 def explain_review(row):
     explanations = []
 
@@ -21,7 +20,6 @@ def explain_review(row):
 
     return " ".join(explanations)
 
-
 def explain_from_features(row, top_features=None):
     """Extend the generic review text with optional feature highlights."""
     base = explain_review(row)
@@ -30,7 +28,6 @@ def explain_from_features(row, top_features=None):
 
     highlights = ", ".join(str(item) for item in top_features[:3])
     return f"{base} Key drivers: {highlights}."
-
 
 def shap_feature_contributions(pipeline, feature_row, top_k=10):
     """
@@ -69,7 +66,6 @@ def shap_feature_contributions(pipeline, feature_row, top_k=10):
         "abs_shap", ascending=False
     ).head(top_k).drop(columns="abs_shap")
     return contributions.reset_index(drop=True)
-
 
 def create_shap_force_plot(
     pipeline,

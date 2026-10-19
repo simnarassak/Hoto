@@ -2,10 +2,6 @@
 
 from pathlib import Path
 
-# ---------------------------------------------------------------------------
-# World
-# ---------------------------------------------------------------------------
-
 WORLD = {
     "country_name": "Hoto",
     "population": 100_000,
@@ -60,10 +56,6 @@ EMPLOYMENT_DISTRIBUTION = {
     "Retired": 0.10,
 }
 
-# ---------------------------------------------------------------------------
-# Claims ecosystem
-# ---------------------------------------------------------------------------
-
 N_PROVIDERS = 500
 N_CLAIMS = 25_000
 
@@ -98,37 +90,26 @@ CLAIM_AMOUNT_RANGES = {
 CLAIM_STATUSES = ["Approved", "Declined", "Under Review", "Pending"]
 CLAIM_STATUS_PROBS = [0.65, 0.15, 0.10, 0.10]
 
-# ---------------------------------------------------------------------------
-# Fraud scenarios
-# ---------------------------------------------------------------------------
-
 N_DUPLICATE_PAYMENTS = 100
 N_DUPLICATE_CLAIMS = 100
 N_FREQUENCY_CLAIMS = 5
 N_PROVIDER_ANOMALIES = 5
 
-# ---------------------------------------------------------------------------
-# Modelling
-# ---------------------------------------------------------------------------
-
 TEST_SIZE = 0.25
 CLASSIFIER_THRESHOLD = 0.5
 REVIEW_CAPACITIES = (100, 500)
 
-# Blended triage score weights (must sum to 1.0).
 ENSEMBLE_WEIGHTS = {
     "xgboost": 0.50,
     "logistic": 0.30,
     "anomaly": 0.20,
 }
 
-# Transparent rule thresholds (explainable, not learned).
 RULE_PRIOR_CLAIMS_30D = 3
 RULE_MATCHING_CLAIM_COUNT = 1
 RULE_PAYMENT_TO_APPROVED_RATIO = 0.95
 RULE_PROVIDER_AMOUNT_MULTIPLIER = 2.5
 
-# Cloud / Spaces friendly demo scale (used when artifacts are missing).
 DEMO_SCALE = {
     "population": 5_000,
     "n_providers": 100,
@@ -153,13 +134,8 @@ XGB_PARAMS = {
     "n_jobs": -1,
 }
 
-# ---------------------------------------------------------------------------
-# Paths (relative to process working directory)
-# ---------------------------------------------------------------------------
-
 DATA_DIR = Path("data")
 MODELS_DIR = Path("models")
-
 
 def ensure_output_dirs(data_dir=None, models_dir=None):
     data_path = Path(data_dir) if data_dir is not None else DATA_DIR

@@ -13,17 +13,14 @@ from hoto.infer import (
 )
 from hoto.risk_layers import build_provider_risk
 
-
 def project_paths(root=None):
     root = Path(root) if root is not None else Path.cwd()
     return root / "data", root / "models"
-
 
 def ensure_app_ready(data_dir=None, models_dir=None):
     from hoto.bootstrap import ensure_artifacts
 
     return ensure_artifacts(data_dir=data_dir, models_dir=models_dir)
-
 
 def load_live_claim_scores(
     data_dir=None,
@@ -57,7 +54,6 @@ def load_live_claim_scores(
         )
     return scored, models
 
-
 def load_provider_risk_table(scored_claims=None, data_dir=None, models_dir=None):
     data_dir = Path(data_dir) if data_dir is not None else DATA_DIR
     cached = load_artifact_csv("provider_risk_summary.csv", data_dir)
@@ -72,7 +68,6 @@ def load_provider_risk_table(scored_claims=None, data_dir=None, models_dir=None)
     return build_provider_risk(
         scored_claims, providers=providers, data_dir=data_dir
     )
-
 
 def apply_threshold_flags(scored, threshold=CLASSIFIER_THRESHOLD):
     result = scored.copy()
@@ -89,7 +84,6 @@ def apply_threshold_flags(scored, threshold=CLASSIFIER_THRESHOLD):
             result["ensemble_score"] >= threshold
         ).astype(int)
     return result
-
 
 def build_investigation_view(
     scored_claims,

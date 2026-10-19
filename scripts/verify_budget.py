@@ -33,7 +33,7 @@ def main():
     baselines = result["baselines"]
     assert "monthly_budget" in baselines.columns
     assert abs(baselines["budget_share"].sum() - 1.0) < 1e-9
-    # Envelope identity: sum of population budgets equals island baseline demand cost.
+                                                                                      
     assert abs(
         baselines["monthly_budget"].sum()
         - baselines["baseline_monthly_demand_cost"].sum()

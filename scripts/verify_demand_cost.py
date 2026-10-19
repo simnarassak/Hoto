@@ -18,7 +18,7 @@ def check(name, **cfg):
     summary = regional_impact_summary(comparison)
     kpis = _impact_kpis(summary)
 
-    # Manual rebuild of demand cost pressure from month-region rows.
+                                                                    
     manual = (
         comparison["scenario_claims_demand"]
         * comparison["scenario_mean_claim_amount"]
@@ -51,7 +51,7 @@ def check(name, **cfg):
     assert "Demand cost pressure" in html
     assert f"{kpis['demand_cost_change']:+,.0f}" in html
 
-    # For capacity-cutting hazards, served spend can diverge from demand cost.
+                                                                              
     if cfg.get("hazard_type") == "Tsunami" and cfg.get("capacity_mode") == "Very tight":
         coastal = summary.loc[summary["region"].eq("Coastal")].iloc[0]
         assert coastal["abs_change_demand_cost"] > 0

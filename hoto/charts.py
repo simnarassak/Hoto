@@ -4,13 +4,11 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-
 def _empty_fig(message):
     fig = go.Figure()
     fig.add_annotation(text=message, showarrow=False, x=0.5, y=0.5)
     fig.update_layout(height=320, margin=dict(l=20, r=20, t=40, b=20))
     return fig
-
 
 def population_by_region(population):
     if population is None or population.empty:
@@ -31,12 +29,11 @@ def population_by_region(population):
     fig.update_layout(margin=dict(l=20, r=20, t=50, b=20), height=360)
     return fig
 
-
 def age_by_group_heatmap(population):
     if population is None or population.empty:
         return _empty_fig("Population data unavailable")
     table = pd.crosstab(population["age_band"], population["population_group"])
-    # Stable age order when possible
+
     age_order = ["0-17", "18-34", "35-49", "50-64", "65+"]
     table = table.reindex([a for a in age_order if a in table.index])
     fig = px.imshow(
@@ -49,7 +46,6 @@ def age_by_group_heatmap(population):
     )
     fig.update_layout(margin=dict(l=20, r=20, t=50, b=20), height=380)
     return fig
-
 
 def employment_mix(population):
     if population is None or population.empty:
@@ -68,7 +64,6 @@ def employment_mix(population):
     )
     fig.update_layout(margin=dict(l=20, r=20, t=50, b=20), height=360)
     return fig
-
 
 def claims_over_time(claims):
     if claims is None or claims.empty:
@@ -93,7 +88,6 @@ def claims_over_time(claims):
     fig.update_layout(margin=dict(l=20, r=20, t=50, b=20), height=360)
     return fig
 
-
 def claim_type_mix(claims):
     if claims is None or claims.empty:
         return _empty_fig("Claims data unavailable")
@@ -113,7 +107,6 @@ def claim_type_mix(claims):
     )
     fig.update_layout(margin=dict(l=20, r=20, t=50, b=20), height=360)
     return fig
-
 
 def claims_by_region(claims):
     if claims is None or claims.empty:
@@ -139,7 +132,6 @@ def claims_by_region(claims):
     fig.update_layout(margin=dict(l=20, r=20, t=50, b=20), height=360)
     return fig
 
-
 def providers_by_type_region(providers):
     if providers is None or providers.empty:
         return _empty_fig("Provider data unavailable")
@@ -159,7 +151,6 @@ def providers_by_type_region(providers):
     )
     fig.update_layout(margin=dict(l=20, r=20, t=50, b=20), height=380)
     return fig
-
 
 def approved_amount_year_on_year(claims):
     if claims is None or claims.empty:
@@ -211,7 +202,6 @@ def approved_amount_year_on_year(claims):
     )
     return fig
 
-
 def score_histogram(scored, score_column="ensemble_score", threshold=0.35):
     if scored is None or scored.empty or score_column not in scored.columns:
         return _empty_fig("Score data unavailable")
@@ -230,7 +220,6 @@ def score_histogram(scored, score_column="ensemble_score", threshold=0.35):
     )
     fig.update_layout(margin=dict(l=20, r=20, t=50, b=20), height=360)
     return fig
-
 
 def provider_risk_bubble(provider_risk, top_n=40):
     if provider_risk is None or provider_risk.empty:

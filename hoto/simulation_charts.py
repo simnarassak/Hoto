@@ -5,13 +5,11 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 
-
 def _empty(message):
     fig = go.Figure()
     fig.add_annotation(text=message, x=0.5, y=0.5, showarrow=False)
     fig.update_layout(height=360, margin=dict(l=20, r=20, t=40, b=20))
     return fig
-
 
 def _impact_kpis(summary):
     if summary is None or summary.empty:
@@ -65,10 +63,9 @@ def _impact_kpis(summary):
         "regions_total": int(len(frame)),
     }
 
-
 def region_impact_cards_html(summary, value_col="mean_pct_change_demand"):
     """Clean KPI card HTML styled like a results summary card."""
-    del value_col  # kept for call-site compatibility
+    del value_col
     kpis = _impact_kpis(summary)
     demand_color = "#16a34a" if kpis["top_demand_abs"] >= 0 else "#2563eb"
     cost_color = "#16a34a" if kpis["demand_cost_change"] >= 0 else "#2563eb"
@@ -133,7 +130,6 @@ def region_impact_cards_html(summary, value_col="mean_pct_change_demand"):
 </div>
 """
 
-
 def region_impact_rank_bars(summary, value_col="abs_change_claims_demand"):
     """Ranked bars by absolute demand change (percent shown as labels)."""
     if summary is None or summary.empty:
@@ -193,7 +189,6 @@ def region_impact_rank_bars(summary, value_col="abs_change_claims_demand"):
     )
     return fig
 
-
 def region_impact_map(summary, value_col="mean_pct_change_demand"):
     """
     Combined Plotly view for Gradio / smoke tests:
@@ -209,7 +204,6 @@ def region_impact_map(summary, value_col="mean_pct_change_demand"):
 
     fig = go.Figure()
 
-    # Card background
     fig.add_shape(
         type="rect",
         x0=0,
@@ -333,7 +327,6 @@ def region_impact_map(summary, value_col="mean_pct_change_demand"):
     )
     return fig
 
-
 def series_baseline_vs_scenario(
     baseline,
     scenario,
@@ -369,7 +362,6 @@ def series_baseline_vs_scenario(
     )
     return fig
 
-
 def expenditure_comparison_bars(summary):
     if summary is None or summary.empty:
         return _empty("No summary")
@@ -404,7 +396,6 @@ def expenditure_comparison_bars(summary):
         yaxis_title="",
     )
     return fig
-
 
 def budget_pressure_bars(summary):
     """Scenario demand cost vs population-share budget by region."""
@@ -446,7 +437,7 @@ def budget_pressure_bars(summary):
         ),
         barmode="group",
         height=420,
-        # Keep plot domain clear of title (top) and legend (right).
+
         margin=dict(l=16, r=16, t=72, b=56),
         paper_bgcolor="#ffffff",
         plot_bgcolor="#ffffff",
@@ -470,7 +461,6 @@ def budget_pressure_bars(summary):
         ),
     )
     return fig
-
 
 def utilisation_heatmap(comparison):
     if comparison is None or comparison.empty:

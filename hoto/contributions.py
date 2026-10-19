@@ -2,12 +2,10 @@ import numpy as np
 import pandas as pd
 import plotly.graph_objects as go
 
-
 def _as_feature_frame(feature_row):
     if hasattr(feature_row, "to_frame"):
         return feature_row.to_frame().T if getattr(feature_row, "ndim", 1) == 1 else feature_row.copy()
     return pd.DataFrame(feature_row)
-
 
 def shap_contributions(pipeline, feature_row, top_k=12):
     """XGBoost TreeExplainer contributions (often log-odds)."""
@@ -42,13 +40,12 @@ def shap_contributions(pipeline, feature_row, top_k=12):
     table = table.sort_values("abs_contribution", ascending=False).head(top_k)
     final_value = base_value + float(values.sum())
     return {
-        "method": "Model contributions (SHAP)",
+        "method": "Model contributions",
         "base_value": base_value,
         "final_value": final_value,
-        "unit_note": "Values are typically model log-odds contributions, not probabilities.",
+        "unit_note": "Model log-odds style contributions.",
         "contributions": table.drop(columns="abs_contribution").reset_index(drop=True),
     }
-
 
 def linear_contributions(pipeline, feature_row, top_k=12):
     """Simple linear contributions from a logistic regression pipeline."""
@@ -82,24 +79,26 @@ def linear_contributions(pipeline, feature_row, top_k=12):
         "contributions": table.drop(columns="abs_contribution").reset_index(drop=True),
     }
 
-
 def explain_claim_contributions(
     feature_row,
-    method="Model contributions (SHAP)",
+    method="Model contributions",
     xgb_pipeline=None,
     logistic_pipeline=None,
     top_k=12,
 ):
-    if method == "Model contributions (SHAP)":
+    shap_methods = {
+        "Model contributions",
+        "Model contributions (SHAP)",
+    }
+    if method in shap_methods:
         if xgb_pipeline is None:
-            raise ValueError("xgb_pipeline is required for SHAP contributions")
+            raise ValueError("xgb_pipeline is required for model contributions")
         return shap_contributions(xgb_pipeline, feature_row, top_k=top_k)
     if method == "Simple linear contributions":
         if logistic_pipeline is None:
             raise ValueError("logistic_pipeline is required for linear contributions")
         return linear_contributions(logistic_pipeline, feature_row, top_k=top_k)
     raise ValueError(f"Unknown method: {method}")
-
 
 def force_waterfall_figure(explanation, title=None):
     """
@@ -113,8 +112,6 @@ def force_waterfall_figure(explanation, title=None):
         fig.add_annotation(text="No contributions available", showarrow=False)
         return fig
 
-    # Keep signed order as returned (already top by abs), but waterfall
-    # readability is better sorting by contribution descending.
     contrib = contrib.sort_values("contribution", ascending=False)
 
     labels = ["Base"] + contrib["feature"].tolist() + ["Final"]

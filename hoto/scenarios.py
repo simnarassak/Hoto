@@ -13,7 +13,6 @@ from hoto.config import (
     WORLD,
 )
 
-
 def build_scenario_registry():
     return pd.DataFrame([
         {
@@ -46,7 +45,6 @@ def build_scenario_registry():
         },
     ])
 
-
 def inject_fraud_scenarios(claims, payments, people, providers, seed=None):
     base_seed = WORLD["random_seed"] if seed is None else seed
 
@@ -58,7 +56,6 @@ def inject_fraud_scenarios(claims, payments, people, providers, seed=None):
     claims_synthetic = claims_base.copy(deep=True)
     payments_synthetic = payments_base.copy(deep=True)
 
-    # S001 — duplicate payments
     paid_candidates = payments_base.loc[
         payments_base["payment_status"].eq("Paid")
     ].copy()
@@ -92,7 +89,6 @@ def inject_fraud_scenarios(claims, payments, people, providers, seed=None):
         "label_source": "Synthetic scenario injection",
     })
 
-    # S002 — duplicate claims
     duplicate_candidates = claims_base.loc[
         claims_base["claim_status"].isin(["Approved", "Declined"])
     ].copy()
@@ -122,7 +118,6 @@ def inject_fraud_scenarios(claims, payments, people, providers, seed=None):
         "label_source": "Synthetic scenario injection",
     })
 
-    # S003 — abnormal frequency
     base_frequency_claim = claims_base.sample(
         n=1, random_state=base_seed + 13
     ).iloc[0]
@@ -152,7 +147,6 @@ def inject_fraud_scenarios(claims, payments, people, providers, seed=None):
         "label_source": "Synthetic scenario injection",
     })
 
-    # S004 — provider billing anomaly
     provider_claim_counts = claims_base["provider_id"].value_counts()
     eligible_providers = provider_claim_counts.index[provider_claim_counts > 0]
     if len(eligible_providers) == 0:
@@ -249,7 +243,6 @@ def inject_fraud_scenarios(claims, payments, people, providers, seed=None):
         "target_provider_id": target_provider_id,
     }
 
-
 def _validate_scenarios(
     claims_synthetic,
     payments_synthetic,
@@ -311,7 +304,6 @@ def _validate_scenarios(
     assert len(payments_synthetic) == (
         len(payments_base) + len(duplicate_payments)
     )
-
 
 def save_scenario_datasets(result, data_dir):
     data_dir = Path(data_dir)

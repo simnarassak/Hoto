@@ -29,7 +29,6 @@ from hoto.train import (
     train_payment_models,
 )
 
-
 def configure_logging(verbose=False):
     level = logging.DEBUG if verbose else logging.INFO
     logging.basicConfig(
@@ -37,7 +36,6 @@ def configure_logging(verbose=False):
         format="%(asctime)s | %(levelname)s | %(message)s",
         datefmt="%H:%M:%S",
     )
-
 
 def run_pipeline(data_dir=None, models_dir=None, seed=None, skip_train=False):
     data_dir, models_dir = ensure_output_dirs(data_dir, models_dir)
@@ -168,7 +166,7 @@ def run_pipeline(data_dir=None, models_dir=None, seed=None, skip_train=False):
         enrich=True,
         claim_metadata=claim_bundle["claim_metadata"],
     )
-    # Ensure provider_id is present for aggregation.
+
     if "provider_id" not in claim_scored.columns:
         claim_scored = claim_scored.merge(
             claim_bundle["claim_metadata"][["claim_id", "provider_id"]],
@@ -197,7 +195,6 @@ def run_pipeline(data_dir=None, models_dir=None, seed=None, skip_train=False):
         "provider_risk": provider_risk,
         "claim_scored": claim_scored,
     }
-
 
 def build_arg_parser():
     parser = argparse.ArgumentParser(
@@ -239,7 +236,6 @@ def build_arg_parser():
     )
     return parser
 
-
 def main(argv=None):
     parser = build_arg_parser()
     args = parser.parse_args(argv)
@@ -255,7 +251,6 @@ def main(argv=None):
         skip_train=args.skip_train,
     )
     return 0
-
 
 if __name__ == "__main__":
     sys.exit(main())

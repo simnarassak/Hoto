@@ -22,7 +22,6 @@ REQUIRED_DATA_FILES = [
     "hoto_providers.csv",
 ]
 
-
 def artifacts_ready(data_dir=None, models_dir=None):
     data_dir = Path(data_dir) if data_dir is not None else DATA_DIR
     models_dir = Path(models_dir) if models_dir is not None else MODELS_DIR
@@ -31,7 +30,6 @@ def artifacts_ready(data_dir=None, models_dir=None):
     from hoto.infer import models_available
 
     return data_ok and models_available(models_dir)
-
 
 def apply_demo_scale():
     """Shrink generation sizes for cloud-friendly first boot."""
@@ -53,7 +51,6 @@ def apply_demo_scale():
     scenarios.N_DUPLICATE_CLAIMS = DEMO_SCALE["n_duplicate_claims"]
     scenarios.N_FREQUENCY_CLAIMS = DEMO_SCALE["n_frequency_claims"]
     scenarios.N_PROVIDER_ANOMALIES = DEMO_SCALE["n_provider_anomalies"]
-
 
 def ensure_artifacts(data_dir=None, models_dir=None, force_demo=False):
     """

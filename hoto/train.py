@@ -37,7 +37,6 @@ from hoto.features import (
     PAYMENT_MODEL_FEATURES,
 )
 
-
 def _build_preprocessor(numeric_features, categorical_features):
     numeric_pipeline = Pipeline([
         ("imputer", SimpleImputer(strategy="median")),
@@ -51,7 +50,6 @@ def _build_preprocessor(numeric_features, categorical_features):
         ("numeric", numeric_pipeline, numeric_features),
         ("categorical", categorical_pipeline, categorical_features),
     ])
-
 
 def _classification_metrics(y_true, probabilities, threshold=CLASSIFIER_THRESHOLD):
     predictions = (probabilities >= threshold).astype(int)
@@ -67,7 +65,6 @@ def _classification_metrics(y_true, probabilities, threshold=CLASSIFIER_THRESHOL
             y_true, predictions, zero_division=0
         ),
     }
-
 
 def prepare_payment_model_data(payment_features, payment_targets, payment_metadata):
     payment_model_data = (
@@ -121,7 +118,6 @@ def prepare_payment_model_data(payment_features, payment_targets, payment_metada
         "payment_train_idx": payment_train_idx,
         "payment_test_idx": payment_test_idx,
     }
-
 
 def train_payment_models(payment_split, models_dir, data_dir):
     X_train = payment_split["X_train"]
@@ -242,7 +238,6 @@ def train_payment_models(payment_split, models_dir, data_dir):
         "preprocessor": preprocessor,
     }
 
-
 def prepare_claim_model_data(claim_features, claim_targets, claim_metadata):
     claim_model_data = (
         claim_features
@@ -297,7 +292,6 @@ def prepare_claim_model_data(claim_features, claim_targets, claim_metadata):
         "claim_train_idx": claim_train_idx,
         "claim_test_idx": claim_test_idx,
     }
-
 
 def train_claim_models(claim_split, models_dir, data_dir):
     X_claim_train = claim_split["X_claim_train"]

@@ -8,7 +8,6 @@ import pandas as pd
 from hoto.config import REGIONS, WORLD
 from hoto.simulation_config import default_config
 
-
 def regional_populations(config=None):
     """Population counts by region from configured shares of the island total."""
     config = default_config() if config is None else config
@@ -24,7 +23,6 @@ def regional_populations(config=None):
     population = WORLD["population"] * shares / share_total
     return population
 
-
 def population_budget_shares(config=None):
     """Region share of the national claims budget (proportional to population)."""
     population = regional_populations(config)
@@ -33,7 +31,6 @@ def population_budget_shares(config=None):
         n = max(len(population), 1)
         return pd.Series(1.0 / n, index=population.index, dtype=float)
     return population / total
-
 
 def build_regional_baselines(claims, providers, config=None):
     """
@@ -88,7 +85,7 @@ def build_regional_baselines(claims, providers, config=None):
                 min(scaled, demand * 1.25) if scaled > 0 else headroom_capacity,
             )
         else:
-            # Very tight: stay below demand so backlog demos are clear.
+
             monthly_capacity.loc[region] = headroom_capacity
 
     approved = claims.loc[claims["claim_status"].eq("Approved")]
@@ -121,10 +118,8 @@ def build_regional_baselines(claims, providers, config=None):
         "baseline_monthly_demand_cost": baseline_demand_cost.to_numpy(dtype=float),
     }).reset_index(drop=True)
 
-
 def _is_affected(region, config, apply_scenario):
     return apply_scenario and region in config.affected_regions()
-
 
 def _stress_for_region(region, month_index, config, apply_scenario):
     if (
@@ -136,13 +131,11 @@ def _stress_for_region(region, month_index, config, apply_scenario):
         )
     return config.baseline_stress_index
 
-
 def _demand_from_stress(baseline_demand, stress_index, config):
     beta = config.effective_beta()
     return baseline_demand * (
         1.0 + beta * (stress_index - config.baseline_stress_index) / 100.0
     )
-
 
 def _scenario_capacity(base_capacity, region, config, apply_scenario):
     capacity = float(base_capacity)
@@ -151,14 +144,12 @@ def _scenario_capacity(base_capacity, region, config, apply_scenario):
     loss = config.hazard_profile()["capacity_loss_pct"] / 100.0
     return capacity * (1.0 - loss)
 
-
 def _scenario_mean_amount(base_amount, region, config, apply_scenario):
     amount = float(base_amount)
     if not _is_affected(region, config, apply_scenario):
         return amount
     uplift = config.hazard_profile()["mean_amount_uplift_pct"] / 100.0
     return amount * (1.0 + uplift)
-
 
 def run_simulation(
     claims,
@@ -243,7 +234,6 @@ def run_simulation(
     result.attrs["assumptions"] = config.assumptions_text()
     return result
 
-
 def compare_scenarios(baseline, scenario):
     """Month-region comparison with absolute and percentage change."""
     keys = ["month", "region"]
@@ -284,7 +274,6 @@ def compare_scenarios(baseline, scenario):
 
     return merged
 
-
 def run_baseline_and_scenario(claims, providers, config=None):
     config = default_config() if config is None else config
     baselines = build_regional_baselines(claims, providers, config)
@@ -311,7 +300,6 @@ def run_baseline_and_scenario(claims, providers, config=None):
         "comparison": comparison,
         "assumptions": config.assumptions_text(),
     }
-
 
 def regional_impact_summary(comparison):
     """Aggregate absolute/pct changes by region over the horizon."""
@@ -342,11 +330,10 @@ def regional_impact_summary(comparison):
         .sort_values("abs_change_claims_demand", ascending=False)
     )
     summary["over_budget"] = summary["scenario_budget_gap"] > 1e-6
-    # Backward-compatible alias used by older chart helpers.
+
     summary["abs_change_expenditure"] = summary["abs_change_demand_cost"]
     summary["mean_pct_change_expenditure"] = summary["mean_pct_change_demand_cost"]
     return summary
-
 
 def load_sim_inputs(data_dir="data"):
     data_dir = Path(data_dir)

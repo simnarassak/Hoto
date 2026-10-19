@@ -12,7 +12,6 @@ from hoto.risk_layers import (
     enrich_scored_payments,
 )
 
-
 PAYMENT_MODEL_FILES = {
     "logistic": "hoto_payment_fraud_logistic_regression.joblib",
     "anomaly": "hoto_payment_isolation_forest.joblib",
@@ -25,12 +24,10 @@ CLAIM_MODEL_FILES = {
     "xgboost": "claim_xgboost_pipeline.joblib",
 }
 
-
 def models_available(models_dir=None):
     models_dir = Path(models_dir) if models_dir is not None else MODELS_DIR
     required = list(PAYMENT_MODEL_FILES.values()) + list(CLAIM_MODEL_FILES.values())
     return all((models_dir / name).exists() for name in required)
-
 
 def load_payment_models(models_dir=None):
     models_dir = Path(models_dir) if models_dir is not None else MODELS_DIR
@@ -39,7 +36,6 @@ def load_payment_models(models_dir=None):
         for key, filename in PAYMENT_MODEL_FILES.items()
     }
 
-
 def load_claim_models(models_dir=None):
     models_dir = Path(models_dir) if models_dir is not None else MODELS_DIR
     return {
@@ -47,13 +43,11 @@ def load_claim_models(models_dir=None):
         for key, filename in CLAIM_MODEL_FILES.items()
     }
 
-
 def _ensure_columns(frame, columns):
     missing = [column for column in columns if column not in frame.columns]
     if missing:
         raise ValueError(f"Missing required columns: {missing}")
     return frame[columns].copy()
-
 
 def score_payments(
     payment_features,
@@ -88,7 +82,6 @@ def score_payments(
             result["ensemble_score"] >= threshold
         ).astype(int)
     return result
-
 
 def score_claims(
     claim_features,
@@ -133,14 +126,12 @@ def score_claims(
         ).astype(int)
     return result
 
-
 def load_artifact_csv(name, data_dir=None):
     data_dir = Path(data_dir) if data_dir is not None else DATA_DIR
     path = data_dir / name
     if not path.exists():
         return None
     return pd.read_csv(path)
-
 
 def top_n_queue(scored, score_column="ensemble_score", n=100, threshold=None):
     frame = scored.copy()

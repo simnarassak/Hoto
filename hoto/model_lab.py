@@ -19,7 +19,6 @@ from sklearn.metrics import (
 from hoto.config import CLASSIFIER_THRESHOLD, REVIEW_CAPACITIES
 from hoto.explain import explain_review
 
-
 def build_unified_risk_results(
     payment_model_results,
     claim_model_data,
@@ -93,7 +92,6 @@ def build_unified_risk_results(
         data_dir / "unified_risk_results.csv", index=False
     )
     return unified_risk_results
-
 
 def build_investigation_queue(unified_risk_results, data_dir):
     investigation_queue = unified_risk_results.copy()
@@ -170,7 +168,6 @@ def build_investigation_queue(unified_risk_results, data_dir):
     )
     return investigation_queue, investigator_view
 
-
 def _model_comparison_table(model_probabilities, y_true, threshold=CLASSIFIER_THRESHOLD):
     rows = []
     for model_name, probabilities in model_probabilities.items():
@@ -193,7 +190,6 @@ def _model_comparison_table(model_probabilities, y_true, threshold=CLASSIFIER_TH
         })
     return pd.DataFrame(rows)
 
-
 def _capacity_table(model_probabilities, y_true, capacities=REVIEW_CAPACITIES):
     rows = []
     for model_name, probabilities in model_probabilities.items():
@@ -209,7 +205,6 @@ def _capacity_table(model_probabilities, y_true, capacities=REVIEW_CAPACITIES):
                 "Recall at Capacity": detected / max(int(y_true.sum()), 1),
             })
     return pd.DataFrame(rows)
-
 
 def build_payment_model_lab(
     payment_model_data,
@@ -255,7 +250,6 @@ def build_payment_model_lab(
         "review_capacity_comparison": review_capacity_comparison,
         "payment_model_predictions": payment_model_predictions,
     }
-
 
 def build_claim_model_lab(
     claim_model_data,
@@ -306,7 +300,6 @@ def build_claim_model_lab(
         "claim_review_capacity_comparison": claim_capacity,
         "claim_model_predictions": claim_model_predictions,
     }
-
 
 def consolidate_model_lab(
     payment_lab,
@@ -370,7 +363,6 @@ def consolidate_model_lab(
         "model_lab_capacity": model_lab_capacity,
         "model_lab_predictions": model_lab_predictions,
     }
-
 
 def build_curve_artifacts(
     y_test,
