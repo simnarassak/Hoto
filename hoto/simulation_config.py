@@ -98,7 +98,6 @@ class SimulationConfig:
     baseline_stress_index: float = 100.0
     stress_to_demand_beta: float = 0.25
     hazard_type: str = "Economic stress"
-    # Used when hazard allows a region pick; ignored for ALL-profile hazards.
     shocked_region: str = "Industrial"
     stress_shock_pct: float = 10.0
     prevention_budget_pct: float = 0.0
