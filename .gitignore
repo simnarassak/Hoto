@@ -1,0 +1,20 @@
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.pytest_cache/
+.ipynb_checkpoints/
+.DS_Store
+
+# Local scratch / verification outputs
+scripts/_*.png
+scripts/_*.html
+scripts/__pycache__/
+
+# Demo-scale data/ and models/ are committed for Streamlit Cloud cold starts.
+# Rebuild with: python -m hoto --demo
+
+# Local full-scale backups (not for cloud)
+/data_full_backup/
+/models_full_backup/

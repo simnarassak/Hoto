@@ -1,0 +1,9 @@
+Record Type,Model,Review Capacity,Fraud Cases in Top Records,Precision at Capacity,Recall at Capacity,Positive Cases in Top Records
+Payment,Logistic Regression,100,9.0,0.09,1.0,
+Payment,Logistic Regression,500,9.0,0.018,1.0,
+Payment,XGBoost,100,9.0,0.09,1.0,
+Payment,XGBoost,500,9.0,0.018,1.0,
+Claim,Logistic Regression,100,,0.13,0.9285714285714286,13.0
+Claim,Logistic Regression,500,,0.028,1.0,14.0
+Claim,XGBoost,100,,0.14,1.0,14.0
+Claim,XGBoost,500,,0.028,1.0,14.0

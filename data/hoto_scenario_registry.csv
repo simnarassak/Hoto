@@ -1,0 +1,5 @@
+scenario_id,scenario_type,description,entity_type,generation_method
+S001,Duplicate Payment,A second paid transaction repeats an existing payment.,payment,Copy a paid transaction with a new payment ID.
+S002,Duplicate Claim,A new submission repeats an existing claim's details.,claim,Copy claim details and create a later submission.
+S003,Abnormal Claim Frequency,Several related claims are clustered within a short period.,claim,Generate repeated claims for one synthetic claimant.
+S004,Provider Billing Anomaly,Claims associated with a provider have unusually high amounts.,claim,Generate high-value claims associated with one provider.
