@@ -1,4 +1,4 @@
-"""Extra risk dimensions: ensemble triage, rule hits, provider risk."""
+"""Risk dimensions: ensemble triage, rule hits, provider risk."""
 
 from pathlib import Path
 
@@ -132,7 +132,6 @@ def build_provider_risk(claim_scored, providers=None, data_dir=None):
 
 
 def enrich_scored_claims(claim_features, scored):
-    """Attach rules + ensemble onto claim scores."""
     with_rules = add_claim_rule_hits(claim_features)
     extra_cols = [
         "rule_high_velocity_30d",
@@ -149,7 +148,6 @@ def enrich_scored_claims(claim_features, scored):
 
 
 def enrich_scored_payments(payment_features, scored):
-    """Attach rules + ensemble onto payment scores."""
     with_rules = add_payment_rule_hits(payment_features)
     extra_cols = [
         "rule_near_full_payout",
