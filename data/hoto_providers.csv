@@ -1,101 +1,151 @@
 provider_id,region,provider_type,registration_date,service_capacity,provider_status
-PROV00001,Rural,Rehabilitation,2023-09-01,1263,Active
-PROV00002,Capital,Other Support,2023-03-02,1088,Active
-PROV00003,Capital,Other Support,2021-09-27,185,Inactive
-PROV00004,Coastal,Medical,2022-06-20,722,Active
-PROV00005,Rural,Transport,2023-06-22,695,Active
-PROV00006,Capital,Medical,2023-08-25,1078,Active
-PROV00007,Coastal,Medical,2020-07-09,819,Active
-PROV00008,Metro,Pharmacy,2020-01-06,1039,Active
-PROV00009,Metro,Other Support,2024-06-15,820,Active
-PROV00010,Metro,Rehabilitation,2024-04-08,559,Active
-PROV00011,Industrial,Medical,2021-12-30,441,Active
-PROV00012,Industrial,Medical,2023-08-09,1712,Active
-PROV00013,Metro,Rehabilitation,2021-05-27,1211,Inactive
-PROV00014,Metro,Transport,2022-09-12,848,Active
-PROV00015,Metro,Other Support,2022-03-26,497,Active
-PROV00016,Capital,Transport,2023-05-29,447,Active
-PROV00017,Metro,Pharmacy,2023-01-01,1328,Active
-PROV00018,Industrial,Pharmacy,2022-12-19,1136,Active
-PROV00019,Coastal,Rehabilitation,2023-10-16,605,Active
-PROV00020,Rural,Other Support,2022-03-25,1197,Active
-PROV00021,Metro,Transport,2020-05-07,874,Active
-PROV00022,Industrial,Rehabilitation,2022-06-29,1221,Active
-PROV00023,Rural,Transport,2020-10-01,1207,Active
-PROV00024,Industrial,Pharmacy,2020-01-12,1456,Active
-PROV00025,Industrial,Rehabilitation,2020-10-16,1692,Active
-PROV00026,Capital,Rehabilitation,2023-04-11,866,Active
-PROV00027,Capital,Other Support,2023-08-05,1756,Active
-PROV00028,Coastal,Rehabilitation,2024-11-30,398,Active
-PROV00029,Capital,Rehabilitation,2021-05-03,909,Active
-PROV00030,Metro,Other Support,2022-03-05,1868,Active
-PROV00031,Metro,Other Support,2021-04-01,1677,Active
-PROV00032,Rural,Transport,2020-08-19,1314,Active
-PROV00033,Capital,Rehabilitation,2020-05-17,1501,Active
-PROV00034,Metro,Medical,2023-03-09,306,Active
-PROV00035,Rural,Medical,2023-04-04,1652,Active
-PROV00036,Capital,Medical,2022-03-19,447,Active
-PROV00037,Metro,Medical,2021-04-16,312,Active
-PROV00038,Rural,Pharmacy,2020-10-28,842,Active
-PROV00039,Metro,Medical,2024-04-16,1845,Active
-PROV00040,Metro,Medical,2022-05-08,1229,Active
-PROV00041,Metro,Rehabilitation,2023-07-04,621,Active
-PROV00042,Capital,Transport,2020-09-22,1976,Active
-PROV00043,Rural,Medical,2024-05-10,1879,Active
-PROV00044,Capital,Medical,2024-02-05,517,Active
-PROV00045,Rural,Other Support,2020-02-27,1389,Active
-PROV00046,Capital,Transport,2022-06-01,1434,Active
-PROV00047,Rural,Other Support,2021-10-15,1437,Active
-PROV00048,Industrial,Medical,2023-10-06,1863,Active
-PROV00049,Metro,Pharmacy,2024-06-20,902,Active
-PROV00050,Capital,Medical,2020-08-05,801,Active
-PROV00051,Metro,Transport,2020-01-17,332,Active
-PROV00052,Metro,Pharmacy,2020-06-02,1428,Active
-PROV00053,Rural,Medical,2021-02-07,1362,Active
-PROV00054,Capital,Medical,2024-03-31,359,Active
-PROV00055,Capital,Transport,2021-10-04,1826,Active
-PROV00056,Coastal,Rehabilitation,2022-03-05,867,Active
-PROV00057,Metro,Rehabilitation,2021-06-27,296,Active
-PROV00058,Rural,Transport,2023-11-17,626,Active
-PROV00059,Coastal,Pharmacy,2024-08-16,633,Active
-PROV00060,Coastal,Transport,2020-06-29,785,Active
-PROV00061,Industrial,Pharmacy,2021-07-12,815,Active
-PROV00062,Metro,Other Support,2021-03-08,609,Active
-PROV00063,Capital,Other Support,2021-08-23,1565,Active
-PROV00064,Capital,Rehabilitation,2024-07-20,1571,Active
-PROV00065,Metro,Medical,2021-10-26,1036,Active
-PROV00066,Rural,Pharmacy,2020-07-31,1149,Active
-PROV00067,Rural,Medical,2022-01-09,1282,Active
-PROV00068,Industrial,Pharmacy,2022-09-08,1605,Active
-PROV00069,Coastal,Medical,2021-04-25,226,Active
-PROV00070,Metro,Medical,2021-05-22,769,Active
-PROV00071,Capital,Rehabilitation,2021-09-09,231,Active
-PROV00072,Rural,Rehabilitation,2021-07-03,695,Active
-PROV00073,Industrial,Medical,2021-09-25,1299,Active
-PROV00074,Industrial,Other Support,2020-03-31,683,Active
-PROV00075,Rural,Medical,2024-06-20,1239,Active
-PROV00076,Rural,Medical,2023-05-27,526,Active
-PROV00077,Coastal,Medical,2024-12-09,271,Active
-PROV00078,Rural,Medical,2020-03-28,1426,Active
-PROV00079,Rural,Rehabilitation,2020-01-19,1874,Active
-PROV00080,Metro,Pharmacy,2021-09-05,1777,Active
-PROV00081,Metro,Transport,2022-05-20,112,Active
-PROV00082,Metro,Rehabilitation,2022-09-03,401,Active
-PROV00083,Industrial,Pharmacy,2022-10-28,1177,Active
-PROV00084,Rural,Rehabilitation,2024-11-10,121,Active
-PROV00085,Coastal,Medical,2024-09-30,1049,Active
-PROV00086,Rural,Rehabilitation,2024-04-05,162,Active
-PROV00087,Rural,Medical,2022-08-06,1748,Active
-PROV00088,Rural,Medical,2022-06-07,133,Active
-PROV00089,Rural,Medical,2024-02-28,1355,Active
-PROV00090,Capital,Medical,2024-01-26,1004,Active
-PROV00091,Industrial,Medical,2024-06-22,1101,Active
-PROV00092,Capital,Rehabilitation,2021-09-27,1548,Active
-PROV00093,Rural,Other Support,2024-05-06,902,Inactive
-PROV00094,Metro,Rehabilitation,2020-03-01,716,Active
-PROV00095,Metro,Pharmacy,2023-11-01,734,Active
-PROV00096,Industrial,Other Support,2021-01-12,837,Active
-PROV00097,Rural,Rehabilitation,2020-02-05,599,Active
-PROV00098,Metro,Medical,2020-04-13,1791,Active
-PROV00099,Coastal,Medical,2020-05-18,1373,Active
-PROV00100,Coastal,Pharmacy,2021-08-10,1839,Inactive
+PROV00001,Rural,Transport,2021-02-26,602,Active
+PROV00002,Capital,Pharmacy,2020-06-04,83,Active
+PROV00003,Capital,Medical,2024-11-11,562,Active
+PROV00004,Coastal,Medical,2021-04-06,1491,Active
+PROV00005,Rural,Transport,2022-04-06,195,Active
+PROV00006,Capital,Rehabilitation,2024-12-02,1619,Active
+PROV00007,Coastal,Rehabilitation,2023-12-05,1588,Active
+PROV00008,Metro,Transport,2023-12-24,406,Active
+PROV00009,Metro,Pharmacy,2023-04-13,1320,Active
+PROV00010,Metro,Transport,2024-07-17,639,Active
+PROV00011,Industrial,Pharmacy,2021-01-15,342,Active
+PROV00012,Industrial,Other Support,2024-01-07,480,Active
+PROV00013,Metro,Other Support,2023-02-06,1480,Active
+PROV00014,Metro,Rehabilitation,2022-02-01,108,Active
+PROV00015,Metro,Medical,2020-12-04,264,Active
+PROV00016,Capital,Pharmacy,2022-08-17,714,Active
+PROV00017,Metro,Medical,2020-07-17,1576,Active
+PROV00018,Industrial,Pharmacy,2023-07-08,885,Active
+PROV00019,Coastal,Medical,2023-06-08,1811,Active
+PROV00020,Rural,Medical,2023-07-05,1597,Active
+PROV00021,Metro,Rehabilitation,2020-01-14,1650,Active
+PROV00022,Industrial,Rehabilitation,2022-10-21,1615,Active
+PROV00023,Rural,Medical,2024-08-24,1924,Active
+PROV00024,Industrial,Other Support,2020-01-14,1170,Active
+PROV00025,Industrial,Medical,2024-04-15,1243,Active
+PROV00026,Capital,Medical,2024-11-04,502,Active
+PROV00027,Capital,Medical,2021-09-04,1755,Active
+PROV00028,Coastal,Medical,2021-09-22,1506,Active
+PROV00029,Capital,Rehabilitation,2024-11-28,335,Active
+PROV00030,Metro,Pharmacy,2020-04-07,190,Active
+PROV00031,Metro,Transport,2023-05-06,1247,Active
+PROV00032,Rural,Rehabilitation,2023-03-11,1540,Active
+PROV00033,Capital,Pharmacy,2023-12-26,1863,Active
+PROV00034,Metro,Rehabilitation,2022-10-06,648,Active
+PROV00035,Rural,Medical,2021-03-14,483,Active
+PROV00036,Capital,Rehabilitation,2023-01-12,1969,Active
+PROV00037,Metro,Medical,2022-11-09,1749,Active
+PROV00038,Rural,Medical,2023-12-10,598,Active
+PROV00039,Metro,Medical,2020-10-23,1891,Active
+PROV00040,Metro,Medical,2020-07-04,643,Active
+PROV00041,Metro,Medical,2020-10-28,1932,Active
+PROV00042,Capital,Rehabilitation,2024-07-20,1756,Active
+PROV00043,Rural,Other Support,2024-04-03,1292,Active
+PROV00044,Capital,Rehabilitation,2023-09-19,562,Active
+PROV00045,Rural,Pharmacy,2020-09-01,1319,Active
+PROV00046,Capital,Other Support,2021-03-17,1800,Active
+PROV00047,Rural,Rehabilitation,2020-10-30,1907,Active
+PROV00048,Industrial,Medical,2022-11-19,91,Active
+PROV00049,Metro,Medical,2020-09-14,1927,Active
+PROV00050,Capital,Pharmacy,2024-07-25,1955,Active
+PROV00051,Metro,Transport,2022-02-22,773,Active
+PROV00052,Metro,Rehabilitation,2022-02-20,1692,Active
+PROV00053,Rural,Transport,2021-10-25,1522,Active
+PROV00054,Capital,Medical,2023-06-26,847,Active
+PROV00055,Capital,Pharmacy,2024-07-31,1811,Active
+PROV00056,Coastal,Transport,2023-09-05,1663,Active
+PROV00057,Metro,Rehabilitation,2020-05-13,421,Active
+PROV00058,Rural,Transport,2024-02-18,1812,Active
+PROV00059,Coastal,Rehabilitation,2020-08-06,1322,Inactive
+PROV00060,Coastal,Rehabilitation,2022-06-04,1732,Active
+PROV00061,Industrial,Rehabilitation,2020-01-24,1904,Active
+PROV00062,Metro,Medical,2023-02-20,432,Active
+PROV00063,Capital,Transport,2022-07-26,1694,Active
+PROV00064,Capital,Other Support,2022-09-29,111,Active
+PROV00065,Metro,Rehabilitation,2021-02-21,645,Active
+PROV00066,Rural,Medical,2022-04-13,920,Active
+PROV00067,Rural,Transport,2020-07-01,1237,Active
+PROV00068,Industrial,Rehabilitation,2021-01-05,1960,Inactive
+PROV00069,Coastal,Medical,2021-07-24,1859,Active
+PROV00070,Metro,Rehabilitation,2022-03-15,973,Active
+PROV00071,Capital,Medical,2021-03-31,1307,Active
+PROV00072,Rural,Pharmacy,2022-01-12,860,Active
+PROV00073,Industrial,Rehabilitation,2021-03-31,108,Active
+PROV00074,Industrial,Pharmacy,2021-01-22,786,Active
+PROV00075,Rural,Medical,2020-01-07,298,Active
+PROV00076,Rural,Medical,2020-02-28,1235,Active
+PROV00077,Coastal,Pharmacy,2021-09-26,1886,Active
+PROV00078,Rural,Rehabilitation,2022-07-04,1760,Active
+PROV00079,Rural,Pharmacy,2024-12-05,641,Active
+PROV00080,Metro,Medical,2022-12-15,1690,Active
+PROV00081,Metro,Medical,2023-01-04,85,Active
+PROV00082,Metro,Other Support,2024-08-11,77,Active
+PROV00083,Industrial,Medical,2021-04-04,1609,Active
+PROV00084,Rural,Rehabilitation,2022-10-24,811,Active
+PROV00085,Coastal,Medical,2024-04-09,627,Active
+PROV00086,Rural,Medical,2021-12-08,130,Active
+PROV00087,Rural,Medical,2021-05-10,166,Active
+PROV00088,Rural,Transport,2020-01-05,734,Active
+PROV00089,Rural,Medical,2022-12-17,1582,Active
+PROV00090,Capital,Medical,2020-06-09,292,Active
+PROV00091,Industrial,Rehabilitation,2024-01-22,1774,Inactive
+PROV00092,Capital,Other Support,2021-04-03,307,Active
+PROV00093,Rural,Pharmacy,2023-11-07,1767,Active
+PROV00094,Metro,Rehabilitation,2022-02-27,1420,Active
+PROV00095,Metro,Pharmacy,2023-01-30,1072,Active
+PROV00096,Industrial,Medical,2020-11-08,625,Active
+PROV00097,Rural,Medical,2023-05-18,1866,Active
+PROV00098,Metro,Medical,2024-04-30,635,Active
+PROV00099,Coastal,Medical,2024-09-24,341,Active
+PROV00100,Coastal,Medical,2020-02-13,1232,Active
+PROV00101,Metro,Rehabilitation,2023-04-24,1845,Active
+PROV00102,Industrial,Medical,2022-12-14,943,Active
+PROV00103,Industrial,Rehabilitation,2022-03-27,1284,Active
+PROV00104,Metro,Rehabilitation,2023-06-22,473,Active
+PROV00105,Coastal,Medical,2022-03-29,1628,Active
+PROV00106,Capital,Pharmacy,2021-07-20,334,Active
+PROV00107,Capital,Rehabilitation,2021-04-27,1398,Inactive
+PROV00108,Coastal,Medical,2022-10-28,153,Active
+PROV00109,Industrial,Rehabilitation,2023-07-12,449,Active
+PROV00110,Metro,Rehabilitation,2023-11-01,1928,Active
+PROV00111,Metro,Transport,2024-02-15,1668,Active
+PROV00112,Metro,Transport,2023-12-02,1013,Active
+PROV00113,Metro,Rehabilitation,2021-02-22,873,Active
+PROV00114,Rural,Medical,2020-11-22,1034,Active
+PROV00115,Industrial,Other Support,2021-11-17,970,Active
+PROV00116,Coastal,Transport,2023-08-22,1059,Active
+PROV00117,Industrial,Medical,2022-01-10,1062,Active
+PROV00118,Coastal,Medical,2024-07-23,1461,Active
+PROV00119,Metro,Rehabilitation,2021-01-01,966,Active
+PROV00120,Industrial,Transport,2020-06-20,1938,Active
+PROV00121,Rural,Other Support,2023-07-19,1624,Active
+PROV00122,Metro,Medical,2021-09-22,536,Active
+PROV00123,Rural,Transport,2023-05-10,1999,Active
+PROV00124,Coastal,Other Support,2024-05-23,63,Active
+PROV00125,Rural,Rehabilitation,2020-03-19,1989,Active
+PROV00126,Metro,Transport,2021-02-16,1090,Active
+PROV00127,Industrial,Medical,2023-11-21,693,Active
+PROV00128,Rural,Rehabilitation,2020-12-12,1430,Active
+PROV00129,Rural,Medical,2024-10-04,719,Active
+PROV00130,Industrial,Rehabilitation,2024-07-24,892,Active
+PROV00131,Industrial,Medical,2024-03-23,1341,Active
+PROV00132,Rural,Pharmacy,2023-06-27,547,Active
+PROV00133,Metro,Rehabilitation,2022-04-20,345,Active
+PROV00134,Capital,Pharmacy,2021-11-10,1078,Active
+PROV00135,Capital,Rehabilitation,2020-08-01,1430,Active
+PROV00136,Metro,Medical,2024-09-15,1501,Inactive
+PROV00137,Capital,Medical,2020-01-03,403,Active
+PROV00138,Coastal,Medical,2024-03-07,932,Active
+PROV00139,Capital,Transport,2023-03-14,1723,Active
+PROV00140,Capital,Pharmacy,2022-10-28,1937,Active
+PROV00141,Metro,Medical,2023-10-02,1598,Active
+PROV00142,Rural,Medical,2024-01-29,1218,Active
+PROV00143,Capital,Medical,2023-08-14,530,Active
+PROV00144,Capital,Medical,2022-12-16,1056,Active
+PROV00145,Industrial,Rehabilitation,2021-06-25,1496,Active
+PROV00146,Rural,Pharmacy,2022-11-17,220,Active
+PROV00147,Industrial,Medical,2020-04-29,267,Active
+PROV00148,Capital,Rehabilitation,2021-06-24,1119,Active
+PROV00149,Coastal,Pharmacy,2023-08-30,1838,Active
+PROV00150,Capital,Other Support,2023-01-12,231,Active

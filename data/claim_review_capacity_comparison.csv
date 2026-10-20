@@ -1,5 +1,5 @@
 Model,Review Capacity,Positive Cases in Top Records,Precision at Capacity,Recall at Capacity
-Logistic Regression,100,13,0.13,0.9285714285714286
-Logistic Regression,500,13,0.026,0.9285714285714286
-XGBoost,100,14,0.14,1.0
-XGBoost,500,14,0.028,1.0
+Logistic Regression,100,10,0.1,1.0
+Logistic Regression,500,10,0.02,1.0
+XGBoost,100,10,0.1,1.0
+XGBoost,500,10,0.02,1.0

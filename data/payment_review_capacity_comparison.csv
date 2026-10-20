@@ -1,5 +1,5 @@
 Model,Review Capacity,Fraud Cases in Top Records,Precision at Capacity,Recall at Capacity
-Logistic Regression,100,9,0.09,1.0
-Logistic Regression,500,9,0.018,1.0
-XGBoost,100,9,0.09,1.0
-XGBoost,500,9,0.018,1.0
+Logistic Regression,100,13,0.13,1.0
+Logistic Regression,500,13,0.026,1.0
+XGBoost,100,13,0.13,1.0
+XGBoost,500,13,0.026,1.0
