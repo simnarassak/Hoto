@@ -114,8 +114,7 @@ with tab_home:
                         rural_history,
                         'Rural food market by month (summer shaded)',
                     ),
-                    width="stretch",
-                , key='main_12')
+                    width="stretch", key='main_12')
             elif rural_history is not None:
                 st.plotly_chart(
                     simple_line(
@@ -125,8 +124,7 @@ with tab_home:
                         'River nutrient concentration (baseline history)',
                         color='#047857',
                     ),
-                    width="stretch",
-                , key='main_13')
+                    width="stretch", key='main_13')
 with tab_risk:
     from hoto import charts
     from hoto.app_data import apply_threshold_flags, build_investigation_view, load_provider_risk_table
