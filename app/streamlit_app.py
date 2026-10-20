@@ -75,6 +75,49 @@ with tab_home:
     st.subheader('4. Money decisions')
     st.caption('Approved claim volume and amounts year on year.')
     st.plotly_chart(charts.approved_amount_year_on_year(claims), width="stretch")
+    st.subheader('5. Rural region')
+    st.caption(
+        'Water security, farm livelihoods, river nutrients, and labour in Rural — '
+        'the same region explored in depth in the Hoto Rural app.'
+    )
+    rural_people = _load_csv('rural/people.csv')
+    rural_farms = _load_csv('rural/farms.csv')
+    rural_water = _load_csv('rural/water_bodies.csv')
+    rural_history = _load_csv('rural/history_baseline.csv')
+    if rural_people is None or rural_farms is None or rural_water is None:
+        st.warning('Rural world data missing under data/rural/.')
+    else:
+        from hoto_rural.charts import (
+            rural_demographics_heatmap,
+            rural_home_metrics,
+            rural_labour_roles,
+            rural_water_snapshot,
+            simple_line,
+        )
+        rural_metrics = rural_home_metrics(rural_people, rural_farms, rural_water)
+        r1, r2, r3, r4, r5 = st.columns(5)
+        r1.metric('Rural population', f"{rural_metrics['population']:,}")
+        r2.metric('Farms', f"{rural_metrics['farms']:,}")
+        r3.metric('Available water (m3)', f"{rural_metrics['available_water_m3']:,.0f}")
+        r4.metric('River flow / month (m3)', f"{rural_metrics['river_flow_m3_month']:,.0f}")
+        r5.metric('Farm labour (people)', f"{rural_metrics['farm_labour']:,}")
+        rc1, rc2 = st.columns(2)
+        with rc1:
+            st.plotly_chart(rural_demographics_heatmap(rural_people), width="stretch")
+            st.plotly_chart(rural_water_snapshot(rural_water), width="stretch")
+        with rc2:
+            st.plotly_chart(rural_labour_roles(rural_people), width="stretch")
+            if rural_history is not None:
+                st.plotly_chart(
+                    simple_line(
+                        rural_history,
+                        'month',
+                        'river_nutrient_mg_l',
+                        'River nutrient concentration (baseline history)',
+                        color='#047857',
+                    ),
+                    width="stretch",
+                )
 with tab_risk:
     from hoto import charts
     from hoto.app_data import apply_threshold_flags, build_investigation_view, load_provider_risk_table

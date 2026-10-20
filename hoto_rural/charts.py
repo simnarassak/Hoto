@@ -1,4 +1,5 @@
 import numpy as np
+import pandas as pd
 import plotly.graph_objects as go
 from plotly.subplots import make_subplots
 
@@ -221,3 +222,74 @@ def stress_heatmap(paths, title="Water stress across futures"):
         )
     )
     return _base_layout(fig, title, height=380)
+
+
+def rural_demographics_heatmap(people, title="Rural age band by population group"):
+    table = pd.crosstab(people["age_band"], people["population_group"])
+    age_order = ["0-17", "18-34", "35-49", "50-64", "65+"]
+    table = table.reindex([a for a in age_order if a in table.index])
+    fig = go.Figure(
+        go.Heatmap(
+            z=table.to_numpy(),
+            x=list(table.columns),
+            y=list(table.index),
+            colorscale="Blues",
+            text=table.to_numpy(),
+            texttemplate="%{text}",
+            colorbar=dict(title="People"),
+        )
+    )
+    return _base_layout(fig, title, height=380)
+
+
+def rural_labour_roles(people, title="Rural labour roles"):
+    counts = people["worker_role"].value_counts()
+    return category_bars(
+        counts.index.tolist(),
+        counts.values.tolist(),
+        title,
+        color=COLORS["labour"],
+    )
+
+
+def rural_water_snapshot(water_bodies, title="Rural freshwater and river"):
+    row = water_bodies.iloc[0]
+    labels = [
+        "Reservoir capacity",
+        "Available storage",
+        "River environmental flow / month",
+    ]
+    values = [
+        float(row["capacity_m3"]),
+        float(row["initial_storage_m3"]),
+        float(row["environmental_flow_m3_month"]),
+    ]
+    colors = [COLORS["water"], "#38BDF8", COLORS["nutrient"]]
+    fig = go.Figure(
+        go.Bar(
+            x=values,
+            y=labels,
+            orientation="h",
+            marker=dict(color=colors),
+            text=[f"{v:,.0f} m3" for v in values],
+            textposition="outside",
+        )
+    )
+    return _base_layout(fig, title, height=320)
+
+
+def rural_home_metrics(people, farms, water_bodies):
+    water = water_bodies.iloc[0]
+    farm_roles = {"permanent_farm", "seasonal_farm", "immigrant_farm"}
+    labour_people = int(people["worker_role"].isin(farm_roles).sum())
+    return {
+        "population": int(len(people)),
+        "farms": int(len(farms)),
+        "available_water_m3": float(water["initial_storage_m3"]),
+        "capacity_m3": float(water["capacity_m3"]),
+        "river_flow_m3_month": float(water["environmental_flow_m3_month"]),
+        "farm_labour": labour_people,
+        "seasonal_farm": int((people["worker_role"] == "seasonal_farm").sum()),
+        "immigrant_farm": int((people["worker_role"] == "immigrant_farm").sum()),
+        "permanent_farm": int((people["worker_role"] == "permanent_farm").sum()),
+    }
