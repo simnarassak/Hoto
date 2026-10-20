@@ -30,16 +30,30 @@ fraud or real claim decisions.
 4. Live threshold / top-N review capacity
 5. Contribution force chart for individual claims
 
+## Hoto Rural (independent MVP)
+
+Regional microeconomic / freshwater simulation for Rural (~20% of island population).
+Modules: Economics, Freshwater, Scenario Lab (Monte Carlo). Linked loop:
+water → crops/livestock → manure/nutrients → profit/labour.
+
+```bash
+python -m hoto_rural
+streamlit run app/rural_streamlit_app.py
+```
+
 ## Project layout
 
 ```
 Hoto/
   hoto/
+  hoto_rural/
   app/streamlit_app.py
+  app/rural_streamlit_app.py
   app.py
   hoto_pipeline.py
   requirements.txt
   data/
+  data/rural/
   models/
 ```
 
