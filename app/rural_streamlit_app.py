@@ -140,14 +140,17 @@ with tab_loop:
     a.plotly_chart(
         simple_line(loop, "month", "feed_gap_t", "Feed gap", color="#B45309"),
         width="stretch",
+        key="rural_loop_feed",
     )
     b.plotly_chart(
         simple_line(loop, "month", "water_stress_index", "Water stress", color="#DC2626"),
         width="stretch",
+        key="rural_loop_stress",
     )
     c.plotly_chart(
         simple_line(loop, "month", "river_nutrient_mg_l", "River nutrients", color="#047857"),
         width="stretch",
+        key="rural_loop_nutrients",
     )
     st.plotly_chart(labour_grouped_bars(loop, "Labour demand follows water/season"), width="stretch", key='rural_5')
 
