@@ -74,9 +74,7 @@ If `data/` / `models/` are missing, the app builds a demo-scale world on first b
 ## Deploy (Streamlit Community Cloud)
 
 1. Main file path: `app/streamlit_app.py`
-2. Advanced settings → Python **3.12** if available (deps also support 3.14)
-3. App URL: `hoto-sims.streamlit.app`
-4. To change Python version: delete the app and redeploy
+2. App URL: `hoto-sims.streamlit.app`
 
 ## Inference API
 
