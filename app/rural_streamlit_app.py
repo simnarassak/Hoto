@@ -1,7 +1,6 @@
 from pathlib import Path
 import sys
 
-import pandas as pd
 import streamlit as st
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -9,11 +8,18 @@ if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
 from hoto_rural import config
-from hoto_rural.charts import forecast_fan_chart, simple_line
+from hoto_rural.charts import (
+    category_bars,
+    dual_axis_story,
+    forecast_fan_chart,
+    labour_grouped_bars,
+    simple_line,
+    stress_heatmap,
+)
 from hoto_rural.monte_carlo import build_forecast_bundle
 from hoto_rural.schema import SCENARIO_NAMES
 from hoto_rural.simulate import run_monthly_simulation
-from hoto_rural.world import generate_rural_world, load_world, save_world
+from hoto_rural.world import build_water_body, generate_rural_world, load_world, save_world
 
 DATA_DIR = ROOT / "data" / "rural"
 
@@ -21,9 +27,13 @@ DATA_DIR = ROOT / "data" / "rural"
 @st.cache_resource(show_spinner="Building Hoto Rural world...")
 def _world():
     if (DATA_DIR / "people.csv").exists():
-        return load_world(DATA_DIR)
-    world = generate_rural_world()
-    save_world(world, DATA_DIR)
+        world = load_world(DATA_DIR)
+    else:
+        world = generate_rural_world()
+        save_world(world, DATA_DIR)
+    wb = build_water_body()
+    wb.to_csv(DATA_DIR / "water_bodies.csv", index=False)
+    world["water_bodies"] = wb
     return world
 
 
@@ -41,14 +51,29 @@ def _bundle(scenario, n_paths, value_col):
 st.set_page_config(page_title="Hoto Rural", layout="wide")
 world = _world()
 
-st.title("Hoto Rural")
-st.caption(
-    f"Independent regional MVP · population={world['meta']['population']:,} "
-    f"(matches island Rural share) · farms={world['meta']['n_farms']}"
+st.markdown(
+    """
+    <style>
+    .block-container {padding-top: 1.2rem; padding-bottom: 2rem;}
+    div[data-testid="stMetric"] {
+        background: #F8FAFC;
+        border: 1px solid #E2E8F0;
+        border-radius: 10px;
+        padding: 0.6rem 0.8rem;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True,
 )
 
-tab_home, tab_econ, tab_water, tab_lab = st.tabs(
-    ["Overview", "Economics", "Freshwater", "Scenario Lab"]
+st.title("Hoto Rural")
+st.caption(
+    f"Regional MVP · population={world['meta']['population']:,} "
+    f"· farms={world['meta']['n_farms']} · history {config.HISTORY_MONTHS}m + forecast {config.FORECAST_MONTHS}m"
+)
+
+tab_home, tab_loop, tab_econ, tab_water, tab_lab = st.tabs(
+    ["Overview", "Linked loop", "Economics", "Freshwater", "Scenario Lab"]
 )
 
 with tab_home:
@@ -56,33 +81,149 @@ with tab_home:
     people = world["people"]
     c1.metric("People", f"{len(people):,}")
     c2.metric("Farms", f"{len(world['farms']):,}")
-    c3.metric("Cows", int(world["herds"].loc[world["herds"]["species"].eq("cow"), "n_animals"].sum()))
-    c4.metric("Sheep", int(world["herds"].loc[world["herds"]["species"].eq("sheep"), "n_animals"].sum()))
-    st.subheader("Employment roles")
-    st.dataframe(people["worker_role"].value_counts().rename_axis("role").reset_index(name="people"), width="stretch")
-    st.subheader("Farm types")
-    st.dataframe(world["farms"]["farm_type"].value_counts().rename_axis("farm_type").reset_index(name="farms"), width="stretch")
-    st.subheader("Crops")
-    st.dataframe(world["crops"][["commodity", "archetype", "area_ha"]].groupby(["archetype", "commodity"], as_index=False)["area_ha"].sum(), width="stretch")
+    c3.metric(
+        "Cows",
+        int(world["herds"].loc[world["herds"]["species"].eq("cow"), "n_animals"].sum()),
+    )
+    c4.metric(
+        "Sheep",
+        int(world["herds"].loc[world["herds"]["species"].eq("sheep"), "n_animals"].sum()),
+    )
+    left, right = st.columns(2)
+    with left:
+        role_counts = people["worker_role"].value_counts()
+        st.plotly_chart(
+            category_bars(
+                role_counts.index.tolist(),
+                role_counts.values.tolist(),
+                "Employment roles",
+                color="#5B21B6",
+            ),
+            width="stretch",
+        )
+    with right:
+        farm_counts = world["farms"]["farm_type"].value_counts()
+        st.plotly_chart(
+            category_bars(
+                farm_counts.index.tolist(),
+                farm_counts.values.tolist(),
+                "Farm types",
+                color="#B45309",
+            ),
+            width="stretch",
+        )
+    crop_area = (
+        world["crops"][["commodity", "archetype", "area_ha"]]
+        .groupby(["archetype", "commodity"], as_index=False)["area_ha"]
+        .sum()
+        .sort_values("area_ha", ascending=False)
+    )
+    st.plotly_chart(
+        category_bars(
+            [f"{r.archetype} / {r.commodity}" for r in crop_area.itertuples()],
+            crop_area["area_ha"].tolist(),
+            "Crop area (ha)",
+            color="#047857",
+        ),
+        width="stretch",
+    )
+
+with tab_loop:
+    st.subheader("Water → feed → manure → profit")
+    st.caption(
+        "One baseline path showing how reservoir storage, farm profit, and river nutrients move together."
+    )
+    loop = run_monthly_simulation(
+        world, scenario="baseline", n_months=36, seed=config.RANDOM_SEED, history=True
+    )
+    st.plotly_chart(dual_axis_story(loop, "Linked Rural loop (baseline history)"), width="stretch")
+    a, b, c = st.columns(3)
+    a.plotly_chart(
+        simple_line(loop, "month", "feed_gap_t", "Feed gap", color="#B45309"),
+        width="stretch",
+    )
+    b.plotly_chart(
+        simple_line(loop, "month", "water_stress_index", "Water stress", color="#DC2626"),
+        width="stretch",
+    )
+    c.plotly_chart(
+        simple_line(loop, "month", "river_nutrient_mg_l", "River nutrients", color="#047857"),
+        width="stretch",
+    )
+    st.plotly_chart(labour_grouped_bars(loop, "Labour demand follows water/season"), width="stretch")
 
 with tab_econ:
-    baseline = run_monthly_simulation(world, scenario="baseline", n_months=24, seed=config.RANDOM_SEED)
-    st.plotly_chart(simple_line(baseline, "month", "farm_profit", "Farm profit (baseline)"), width="stretch")
-    st.plotly_chart(simple_line(baseline, "month", "food_price_index", "Food price index"), width="stretch")
-    st.plotly_chart(simple_line(baseline, "month", "labour_demand_seasonal", "Seasonal labour demand"), width="stretch")
-    st.dataframe(baseline[["month", "farm_revenue", "farm_opex", "farm_profit", "subsidy_need", "crop_supply_t"]], width="stretch")
+    baseline = run_monthly_simulation(
+        world, scenario="baseline", n_months=36, seed=config.RANDOM_SEED, history=True
+    )
+    e1, e2 = st.columns(2)
+    with e1:
+        st.plotly_chart(
+            simple_line(baseline, "month", "farm_profit", "Farm profit", color="#B45309"),
+            width="stretch",
+        )
+        st.plotly_chart(
+            simple_line(baseline, "month", "food_price_index", "Food price index", color="#C62828"),
+            width="stretch",
+        )
+    with e2:
+        st.plotly_chart(
+            labour_grouped_bars(baseline, "Seasonal vs immigrant labour"),
+            width="stretch",
+        )
+        st.plotly_chart(
+            simple_line(baseline, "month", "crop_supply_t", "Crop supply (t)", color="#047857"),
+            width="stretch",
+        )
+    st.dataframe(
+        baseline[
+            [
+                "month",
+                "farm_revenue",
+                "farm_opex",
+                "farm_profit",
+                "subsidy_need",
+                "crop_supply_t",
+                "feed_gap_t",
+            ]
+        ],
+        width="stretch",
+    )
 
 with tab_water:
-    drought = run_monthly_simulation(world, scenario="drought", n_months=24, seed=config.RANDOM_SEED + 3)
-    st.plotly_chart(simple_line(drought, "month", "storage_m3", "Reservoir storage under drought"), width="stretch")
-    st.plotly_chart(simple_line(drought, "month", "river_nutrient_mg_l", "River nutrient concentration"), width="stretch")
-    st.plotly_chart(simple_line(drought, "month", "water_stress_index", "Water stress index"), width="stretch")
+    drought = run_monthly_simulation(
+        world, scenario="drought", n_months=36, seed=config.RANDOM_SEED + 3, history=True
+    )
+    w1, w2 = st.columns(2)
+    with w1:
+        st.plotly_chart(
+            simple_line(drought, "month", "storage_m3", "Reservoir storage (drought path)"),
+            width="stretch",
+        )
+        st.plotly_chart(
+            simple_line(
+                drought, "month", "river_nutrient_mg_l", "River nutrient concentration", color="#047857"
+            ),
+            width="stretch",
+        )
+    with w2:
+        st.plotly_chart(
+            simple_line(
+                drought, "month", "water_stress_index", "Water stress index", color="#DC2626"
+            ),
+            width="stretch",
+        )
+        st.plotly_chart(
+            simple_line(drought, "month", "rainfall_mm", "Rainfall (mm)", color="#0284C7"),
+            width="stretch",
+        )
     st.dataframe(
         drought[
             [
                 "month",
                 "rainfall_mm",
                 "storage_m3",
+                "storage_ratio",
                 "irrigation_use_m3",
                 "manure_kg",
                 "river_nutrient_mg_l",
@@ -93,8 +234,9 @@ with tab_water:
     )
 
 with tab_lab:
-    left, right = st.columns([1, 2])
+    left, right = st.columns([1, 2.4])
     with left:
+        st.markdown("#### Scenario controls")
         scenario = st.selectbox("Scenario", options=list(SCENARIO_NAMES), index=1)
         value_col = st.selectbox(
             "Forecast variable",
@@ -103,27 +245,78 @@ with tab_lab:
         )
         n_paths = st.slider("Monte Carlo paths", 20, 120, 60, 10)
         run = st.button("Run Scenario Lab", type="primary")
-    if run or "rural_bundle" not in st.session_state:
+        st.markdown(
+            """
+            **Story**
+            1. History runs on baseline through month 36  
+            2. Futures continue from ending storage  
+            3. Grey paths = simulated futures  
+            4. Red = pointwise median  
+            """
+        )
+    key = (scenario, n_paths, value_col)
+    if run or st.session_state.get("rural_key") != key:
         st.session_state["rural_bundle"] = _bundle(scenario, n_paths, value_col)
-        st.session_state["rural_value_col"] = value_col
-        st.session_state["rural_scenario"] = scenario
+        st.session_state["rural_key"] = key
     bundle = st.session_state["rural_bundle"]
-    value_col = st.session_state.get("rural_value_col", value_col)
     with right:
-        m1, m2, m3 = st.columns(3)
-        m1.metric("P(storage < 25% capacity)", f"{bundle['metrics']['prob_storage_below_25pct']:.0%}")
-        m2.metric("Nutrient exceedance (path mean)", f"{bundle['metrics']['mean_path_nutrient_exceedance']:.2f}")
-        m3.metric("Median final farm profit", f"{bundle['metrics']['median_final_profit']:,.0f}")
+        m1, m2, m3, m4 = st.columns(4)
+        m1.metric("P(storage < 25%)", f"{bundle['metrics']['prob_storage_below_25pct']:.0%}")
+        m2.metric(
+            "Nutrient exceedance",
+            f"{bundle['metrics']['mean_path_nutrient_exceedance']:.2f}",
+        )
+        m3.metric("Median final profit", f"{bundle['metrics']['median_final_profit']:,.0f}")
+        m4.metric("Start storage (m3)", f"{bundle['metrics']['start_storage_m3']:,.0f}")
         st.plotly_chart(
             forecast_fan_chart(
                 bundle["history"],
                 bundle["paths"],
                 bundle["summary"],
                 value_col=value_col,
-                title=f"{st.session_state.get('rural_scenario', scenario)} · {value_col} (black history, grey futures, red median)",
+                title=f"{scenario} · {value_col.replace('_', ' ')}",
+                now_month=bundle["now_month"],
             ),
             width="stretch",
         )
-        st.caption("Red line is the pointwise median of simulated futures, not a single most-likely trajectory.")
-        st.subheader("Contract exports (for later Capital/Metro coupling)")
-        st.dataframe(bundle["exports"], width="stretch")
+        st.caption(
+            "Black = history · grey = futures · red = median · band = P10–P90. "
+            "Forecast continues from history ending storage (no reset)."
+        )
+
+    st.markdown("#### Linked outcomes under this scenario")
+    median_path = (
+        bundle["paths"]
+        .groupby("month", as_index=False)
+        .agg(
+            storage_m3=("storage_m3", "median"),
+            farm_profit=("farm_profit", "median"),
+            river_nutrient_mg_l=("river_nutrient_mg_l", "median"),
+            labour_demand_seasonal=("labour_demand_seasonal", "median"),
+            labour_demand_immigrant=("labour_demand_immigrant", "median"),
+            water_stress_index=("water_stress_index", "median"),
+            feed_gap_t=("feed_gap_t", "median"),
+        )
+    )
+    l1, l2 = st.columns(2)
+    with l1:
+        st.plotly_chart(
+            dual_axis_story(median_path, "Median future · storage / profit / nutrients"),
+            width="stretch",
+        )
+        st.plotly_chart(
+            labour_grouped_bars(median_path, "Median future labour demand"),
+            width="stretch",
+        )
+    with l2:
+        st.plotly_chart(
+            stress_heatmap(bundle["paths"], "Water stress across Monte Carlo paths"),
+            width="stretch",
+        )
+        st.plotly_chart(
+            simple_line(median_path, "month", "feed_gap_t", "Median feed gap", color="#B45309"),
+            width="stretch",
+        )
+
+    st.subheader("Contract exports (for later Capital/Metro coupling)")
+    st.dataframe(bundle["exports"], width="stretch")

@@ -16,41 +16,54 @@ HISTORY_MONTHS = 36
 FORECAST_MONTHS = 24
 N_FARMS = 120
 N_MONTE_CARLO = 80
-NUTRIENT_LIMIT_MG_L = 2.5
-BASE_STORAGE_M3 = 25_000_000.0
-BASE_RAINFALL_MM = 85.0
+NUTRIENT_LIMIT_MG_L = 1.8
+BASE_STORAGE_M3 = 11_000_000.0
+BASE_RAINFALL_MM = 84.0
+CATCHMENT_AREA_M2 = 88_000_000.0
+RUNOFF_COEFFICIENT = 0.26
+HOUSEHOLD_WATER_M3_PER_PERSON = 0.35
 DATA_DIR = Path("data") / "rural"
 
 SCENARIO_PARAMS = {
     "baseline": {
         "rainfall_factor": 1.0,
-        "irrigation_efficiency": 0.7,
+        "rainfall_noise": 0.15,
+        "irrigation_efficiency": 0.68,
         "allocation_priority": "balanced",
         "subsidy_rate": 0.05,
+        "manure_runoff_base": 0.16,
     },
     "drought": {
-        "rainfall_factor": 0.55,
-        "irrigation_efficiency": 0.7,
+        "rainfall_factor": 0.72,
+        "rainfall_noise": 0.2,
+        "irrigation_efficiency": 0.68,
         "allocation_priority": "balanced",
         "subsidy_rate": 0.05,
+        "manure_runoff_base": 0.22,
     },
     "efficiency": {
-        "rainfall_factor": 0.55,
-        "irrigation_efficiency": 0.85,
+        "rainfall_factor": 0.72,
+        "rainfall_noise": 0.18,
+        "irrigation_efficiency": 0.86,
         "allocation_priority": "balanced",
         "subsidy_rate": 0.08,
+        "manure_runoff_base": 0.14,
     },
     "allocation": {
-        "rainfall_factor": 0.55,
-        "irrigation_efficiency": 0.7,
+        "rainfall_factor": 0.72,
+        "rainfall_noise": 0.18,
+        "irrigation_efficiency": 0.68,
         "allocation_priority": "essential_first",
         "subsidy_rate": 0.1,
+        "manure_runoff_base": 0.2,
     },
     "combined": {
-        "rainfall_factor": 0.55,
-        "irrigation_efficiency": 0.85,
+        "rainfall_factor": 0.72,
+        "rainfall_noise": 0.17,
+        "irrigation_efficiency": 0.86,
         "allocation_priority": "essential_first",
         "subsidy_rate": 0.12,
+        "manure_runoff_base": 0.12,
     },
 }
 

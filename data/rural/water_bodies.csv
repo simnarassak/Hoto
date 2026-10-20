@@ -1,2 +1,2 @@
 water_body_id,region_id,kind,capacity_m3,initial_storage_m3,environmental_flow_m3_month
-RW001,Rural,reservoir,25000000.0,18000000.0,400000.0
+RW001,Rural,reservoir,11000000.0,6820000.0,280000.0

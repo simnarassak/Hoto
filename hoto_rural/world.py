@@ -186,8 +186,8 @@ def build_water_body():
                 "region_id": REGION_ID,
                 "kind": "reservoir",
                 "capacity_m3": config.BASE_STORAGE_M3,
-                "initial_storage_m3": config.BASE_STORAGE_M3 * 0.72,
-                "environmental_flow_m3_month": 400_000.0,
+                "initial_storage_m3": config.BASE_STORAGE_M3 * 0.62,
+                "environmental_flow_m3_month": 280_000.0,
             }
         ]
     )
