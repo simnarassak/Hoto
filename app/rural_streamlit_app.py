@@ -102,7 +102,7 @@ with tab_home:
                 color="#5B21B6",
             ),
             width="stretch",
-        )
+        , key='rural_1')
     with right:
         farm_counts = world["farms"]["farm_type"].value_counts()
         st.plotly_chart(
@@ -113,7 +113,7 @@ with tab_home:
                 color="#B45309",
             ),
             width="stretch",
-        )
+        , key='rural_2')
     crop_area = (
         world["crops"][["commodity", "archetype", "area_ha"]]
         .groupby(["archetype", "commodity"], as_index=False)["area_ha"]
@@ -128,7 +128,7 @@ with tab_home:
             color="#047857",
         ),
         width="stretch",
-    )
+    , key='rural_3')
 
 with tab_loop:
     st.subheader("Water → feed → manure → profit")
@@ -138,7 +138,7 @@ with tab_loop:
     loop = run_monthly_simulation(
         world, scenario="baseline", n_months=36, seed=config.RANDOM_SEED, history=True
     )
-    st.plotly_chart(dual_axis_story(loop, "Linked Rural loop (baseline history)"), width="stretch")
+    st.plotly_chart(dual_axis_story(loop, "Linked Rural loop (baseline history)"), width="stretch", key='rural_4')
     a, b, c = st.columns(3)
     a.plotly_chart(
         simple_line(loop, "month", "feed_gap_t", "Feed gap", color="#B45309"),
@@ -152,7 +152,7 @@ with tab_loop:
         simple_line(loop, "month", "river_nutrient_mg_l", "River nutrients", color="#047857"),
         width="stretch",
     )
-    st.plotly_chart(labour_grouped_bars(loop, "Labour demand follows water/season"), width="stretch")
+    st.plotly_chart(labour_grouped_bars(loop, "Labour demand follows water/season"), width="stretch", key='rural_5')
 
 with tab_market:
     st.subheader("Month-wise supply and demand")
@@ -172,22 +172,22 @@ with tab_market:
     st.plotly_chart(
         food_market_month_chart(market, "Food: local supply, demand, import, export"),
         width="stretch",
-    )
+    , key='rural_6')
     st.plotly_chart(
         labour_match_chart(market, "Labour: seasonal demand vs employed (unmet in red)"),
         width="stretch",
-    )
+    , key='rural_7')
     m1, m2 = st.columns(2)
     with m1:
         st.plotly_chart(
             simple_line(market, "month", "retail_stock_t", "Shop / supermarket stock (t)", color="#B45309"),
             width="stretch",
-        )
+        , key='rural_8')
     with m2:
         st.plotly_chart(
             simple_line(market, "month", "food_price_index", "Food price index", color="#C62828"),
             width="stretch",
-        )
+        , key='rural_9')
     show_summer_only = st.checkbox("Show summer months only in table", value=False)
     table = market.loc[market["is_summer"] == 1] if show_summer_only else market
     st.dataframe(
@@ -221,20 +221,20 @@ with tab_econ:
         st.plotly_chart(
             simple_line(baseline, "month", "farm_profit", "Farm profit", color="#B45309"),
             width="stretch",
-        )
+        , key='rural_10')
         st.plotly_chart(
             simple_line(baseline, "month", "food_price_index", "Food price index", color="#C62828"),
             width="stretch",
-        )
+        , key='rural_11')
     with e2:
         st.plotly_chart(
             labour_grouped_bars(baseline, "Seasonal vs immigrant labour"),
             width="stretch",
-        )
+        , key='rural_12')
         st.plotly_chart(
             simple_line(baseline, "month", "crop_supply_t", "Crop supply (t)", color="#047857"),
             width="stretch",
-        )
+        , key='rural_13')
     st.dataframe(
         baseline[
             [
@@ -259,24 +259,24 @@ with tab_water:
         st.plotly_chart(
             simple_line(drought, "month", "storage_m3", "Reservoir storage (drought path)"),
             width="stretch",
-        )
+        , key='rural_14')
         st.plotly_chart(
             simple_line(
                 drought, "month", "river_nutrient_mg_l", "River nutrient concentration", color="#047857"
             ),
             width="stretch",
-        )
+        , key='rural_15')
     with w2:
         st.plotly_chart(
             simple_line(
                 drought, "month", "water_stress_index", "Water stress index", color="#DC2626"
             ),
             width="stretch",
-        )
+        , key='rural_16')
         st.plotly_chart(
             simple_line(drought, "month", "rainfall_mm", "Rainfall (mm)", color="#0284C7"),
             width="stretch",
-        )
+        , key='rural_17')
     st.dataframe(
         drought[
             [
@@ -338,7 +338,7 @@ with tab_lab:
                 now_month=bundle["now_month"],
             ),
             width="stretch",
-        )
+        , key='rural_18')
         st.caption(
             "Black = history · grey = futures · red = median · band = P10–P90. "
             "Forecast continues from history ending storage (no reset)."
@@ -363,20 +363,20 @@ with tab_lab:
         st.plotly_chart(
             dual_axis_story(median_path, "Median future · storage / profit / nutrients"),
             width="stretch",
-        )
+        , key='rural_19')
         st.plotly_chart(
             labour_grouped_bars(median_path, "Median future labour demand"),
             width="stretch",
-        )
+        , key='rural_20')
     with l2:
         st.plotly_chart(
             stress_heatmap(bundle["paths"], "Water stress across Monte Carlo paths"),
             width="stretch",
-        )
+        , key='rural_21')
         st.plotly_chart(
             simple_line(median_path, "month", "feed_gap_t", "Median feed gap", color="#B45309"),
             width="stretch",
-        )
+        , key='rural_22')
 
     st.subheader("Contract exports (for later Capital/Metro coupling)")
     st.dataframe(bundle["exports"], width="stretch")

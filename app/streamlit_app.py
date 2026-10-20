@@ -57,24 +57,24 @@ with tab_home:
     st.caption('Who lives in this synthetic country?')
     c1, c2 = st.columns(2)
     with c1:
-        st.plotly_chart(charts.population_by_region(population), width="stretch")
-        st.plotly_chart(charts.employment_mix(population), width="stretch")
+        st.plotly_chart(charts.population_by_region(population), width="stretch", key='main_1')
+        st.plotly_chart(charts.employment_mix(population), width="stretch", key='main_2')
     with c2:
-        st.plotly_chart(charts.age_by_group_heatmap(population), width="stretch")
+        st.plotly_chart(charts.age_by_group_heatmap(population), width="stretch", key='main_3')
     st.subheader('2. Incidents and claims')
     st.caption('What claim activity occurs over time and across the map of Hoto?')
     c3, c4 = st.columns(2)
     with c3:
-        st.plotly_chart(charts.claims_over_time(claims), width="stretch")
-        st.plotly_chart(charts.claims_by_region(claims), width="stretch")
+        st.plotly_chart(charts.claims_over_time(claims), width="stretch", key='main_4')
+        st.plotly_chart(charts.claims_by_region(claims), width="stretch", key='main_5')
     with c4:
-        st.plotly_chart(charts.claim_type_mix(claims), width="stretch")
+        st.plotly_chart(charts.claim_type_mix(claims), width="stretch", key='main_6')
     st.subheader('3. Providers')
     st.caption('Who delivers services in each region?')
-    st.plotly_chart(charts.providers_by_type_region(providers), width="stretch")
+    st.plotly_chart(charts.providers_by_type_region(providers), width="stretch", key='main_7')
     st.subheader('4. Money decisions')
     st.caption('Approved claim volume and amounts year on year.')
-    st.plotly_chart(charts.approved_amount_year_on_year(claims), width="stretch")
+    st.plotly_chart(charts.approved_amount_year_on_year(claims), width="stretch", key='main_8')
     st.subheader('5. Rural region')
     st.caption(
         'Water security, farm livelihoods, river nutrients, and labour in Rural — '
@@ -103,10 +103,10 @@ with tab_home:
         r5.metric('Farm labour (people)', f"{rural_metrics['farm_labour']:,}")
         rc1, rc2 = st.columns(2)
         with rc1:
-            st.plotly_chart(rural_demographics_heatmap(rural_people), width="stretch")
-            st.plotly_chart(rural_water_snapshot(rural_water), width="stretch")
+            st.plotly_chart(rural_demographics_heatmap(rural_people), width="stretch", key='main_9')
+            st.plotly_chart(rural_water_snapshot(rural_water), width="stretch", key='main_10')
         with rc2:
-            st.plotly_chart(rural_labour_roles(rural_people), width="stretch")
+            st.plotly_chart(rural_labour_roles(rural_people), width="stretch", key='main_11')
             if rural_history is not None and 'local_food_supply_t' in rural_history.columns:
                 from hoto_rural.charts import food_market_month_chart
                 st.plotly_chart(
@@ -115,7 +115,7 @@ with tab_home:
                         'Rural food market by month (summer shaded)',
                     ),
                     width="stretch",
-                )
+                , key='main_12')
             elif rural_history is not None:
                 st.plotly_chart(
                     simple_line(
@@ -126,7 +126,7 @@ with tab_home:
                         color='#047857',
                     ),
                     width="stretch",
-                )
+                , key='main_13')
 with tab_risk:
     from hoto import charts
     from hoto.app_data import apply_threshold_flags, build_investigation_view, load_provider_risk_table
@@ -144,10 +144,10 @@ with tab_risk:
     m3.metric('Any rule hit', int((scored['rule_hit_count'] > 0).sum()) if 'rule_hit_count' in scored.columns else 0)
     left, right = st.columns(2)
     with left:
-        st.plotly_chart(charts.score_histogram(scored, score_column, threshold), width="stretch")
+        st.plotly_chart(charts.score_histogram(scored, score_column, threshold), width="stretch", key='main_14')
     with right:
         provider_risk = load_provider_risk_table(scored_claims=scored, data_dir=DATA_DIR, models_dir=MODELS_DIR)
-        st.plotly_chart(charts.provider_risk_bubble(provider_risk, top_n=min(40, top_n)), width="stretch")
+        st.plotly_chart(charts.provider_risk_bubble(provider_risk, top_n=min(40, top_n)), width="stretch", key='main_15')
     st.subheader('Investigation queue')
     st.dataframe(view, width="stretch")
     st.subheader('Provider risk table')
@@ -193,7 +193,7 @@ with tab_case:
                 else:
                     explanation = explain_claim_contributions(row.iloc[0], method='Model contributions', xgb_pipeline=models['xgboost'], logistic_pipeline=models['logistic'], top_k=12)
                     fig = force_waterfall_figure(explanation, title=f'Contributions for {claim_id}')
-                    st.plotly_chart(fig, width="stretch")
+                    st.plotly_chart(fig, width="stretch", key='main_16')
                     st.dataframe(explanation['contributions'], width="stretch")
             except Exception as exc:
                 st.warning(f'Contribution chart unavailable: {exc}')
@@ -266,14 +266,14 @@ with tab_sim:
         summary = regional_impact_summary(result['comparison'])
         with right:
             st.markdown(region_impact_cards_html(summary), unsafe_allow_html=True)
-            st.plotly_chart(region_impact_rank_bars(summary), width="stretch")
+            st.plotly_chart(region_impact_rank_bars(summary), width="stretch", key='main_17')
         c1, c2 = st.columns(2)
         with c1:
-            st.plotly_chart(series_baseline_vs_scenario(result['baseline'], result['scenario'], region=view_region, metric=view_metric), width="stretch")
+            st.plotly_chart(series_baseline_vs_scenario(result['baseline'], result['scenario'], region=view_region, metric=view_metric), width="stretch", key='main_18')
         with c2:
-            st.plotly_chart(expenditure_comparison_bars(summary), width="stretch")
-        st.plotly_chart(budget_pressure_bars(summary), width="stretch")
-        st.plotly_chart(utilisation_heatmap(result['comparison']), width="stretch")
+            st.plotly_chart(expenditure_comparison_bars(summary), width="stretch", key='main_19')
+        st.plotly_chart(budget_pressure_bars(summary), width="stretch", key='main_20')
+        st.plotly_chart(utilisation_heatmap(result['comparison']), width="stretch", key='main_21')
         st.subheader('Regional impact summary')
         st.dataframe(summary, width="stretch")
         st.subheader('Month-by-region comparison')
