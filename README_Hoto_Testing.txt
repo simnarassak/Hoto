@@ -1,7 +1,7 @@
 # Hoto pipeline — testing guide
 
 ## What this project does
-The `hoto` package rebuilds the synthetic Hoto datasets, engineers claim/payment
+The `hoto` package rebuilds the synthetic Hoto datasets for 100K population, engineers claim/payment
 features, trains classifiers and anomaly detectors (including XGBoost), and
 writes Model Lab CSV artifacts plus fitted models.
 
