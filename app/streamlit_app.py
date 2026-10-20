@@ -57,24 +57,24 @@ with tab_home:
     st.caption('Who lives in this synthetic country?')
     c1, c2 = st.columns(2)
     with c1:
-        st.plotly_chart(charts.population_by_region(population), use_container_width=True)
-        st.plotly_chart(charts.employment_mix(population), use_container_width=True)
+        st.plotly_chart(charts.population_by_region(population), width="stretch")
+        st.plotly_chart(charts.employment_mix(population), width="stretch")
     with c2:
-        st.plotly_chart(charts.age_by_group_heatmap(population), use_container_width=True)
+        st.plotly_chart(charts.age_by_group_heatmap(population), width="stretch")
     st.subheader('2. Incidents and claims')
     st.caption('What claim activity occurs over time and across the map of Hoto?')
     c3, c4 = st.columns(2)
     with c3:
-        st.plotly_chart(charts.claims_over_time(claims), use_container_width=True)
-        st.plotly_chart(charts.claims_by_region(claims), use_container_width=True)
+        st.plotly_chart(charts.claims_over_time(claims), width="stretch")
+        st.plotly_chart(charts.claims_by_region(claims), width="stretch")
     with c4:
-        st.plotly_chart(charts.claim_type_mix(claims), use_container_width=True)
+        st.plotly_chart(charts.claim_type_mix(claims), width="stretch")
     st.subheader('3. Providers')
     st.caption('Who delivers services in each region?')
-    st.plotly_chart(charts.providers_by_type_region(providers), use_container_width=True)
+    st.plotly_chart(charts.providers_by_type_region(providers), width="stretch")
     st.subheader('4. Money decisions')
     st.caption('Approved claim volume and amounts year on year.')
-    st.plotly_chart(charts.approved_amount_year_on_year(claims), use_container_width=True)
+    st.plotly_chart(charts.approved_amount_year_on_year(claims), width="stretch")
 with tab_risk:
     from hoto import charts
     from hoto.app_data import apply_threshold_flags, build_investigation_view, load_provider_risk_table
@@ -92,14 +92,14 @@ with tab_risk:
     m3.metric('Any rule hit', int((scored['rule_hit_count'] > 0).sum()) if 'rule_hit_count' in scored.columns else 0)
     left, right = st.columns(2)
     with left:
-        st.plotly_chart(charts.score_histogram(scored, score_column, threshold), use_container_width=True)
+        st.plotly_chart(charts.score_histogram(scored, score_column, threshold), width="stretch")
     with right:
         provider_risk = load_provider_risk_table(scored_claims=scored, data_dir=DATA_DIR, models_dir=MODELS_DIR)
-        st.plotly_chart(charts.provider_risk_bubble(provider_risk, top_n=min(40, top_n)), use_container_width=True)
+        st.plotly_chart(charts.provider_risk_bubble(provider_risk, top_n=min(40, top_n)), width="stretch")
     st.subheader('Investigation queue')
-    st.dataframe(view, use_container_width=True)
+    st.dataframe(view, width="stretch")
     st.subheader('Provider risk table')
-    st.dataframe(provider_risk.head(top_n), use_container_width=True)
+    st.dataframe(provider_risk.head(top_n), width="stretch")
 with tab_case:
     from hoto.contributions import explain_claim_contributions, force_waterfall_figure
     from hoto.features import CLAIM_MODEL_CATEGORICAL, CLAIM_MODEL_NUMERIC
@@ -121,16 +121,16 @@ with tab_case:
             st.warning('Claim ID not found.')
         else:
             st.subheader('Scores and rule hits')
-            st.dataframe(score_row, use_container_width=True)
+            st.dataframe(score_row, width="stretch")
             if not claim_rows.empty:
                 st.subheader('Claim')
-                st.dataframe(claim_rows, use_container_width=True)
+                st.dataframe(claim_rows, width="stretch")
             if payments is not None:
                 st.subheader('Payments')
-                st.dataframe(payments.loc[payments['claim_id'] == claim_id], use_container_width=True)
+                st.dataframe(payments.loc[payments['claim_id'] == claim_id], width="stretch")
             if events is not None:
                 st.subheader('Event timeline')
-                st.dataframe(events.loc[events['claim_id'] == claim_id].sort_values('event_timestamp'), use_container_width=True)
+                st.dataframe(events.loc[events['claim_id'] == claim_id].sort_values('event_timestamp'), width="stretch")
             st.subheader('Contribution force chart')
             try:
                 models = _claim_models()
@@ -141,8 +141,8 @@ with tab_case:
                 else:
                     explanation = explain_claim_contributions(row.iloc[0], method='Model contributions', xgb_pipeline=models['xgboost'], logistic_pipeline=models['logistic'], top_k=12)
                     fig = force_waterfall_figure(explanation, title=f'Contributions for {claim_id}')
-                    st.plotly_chart(fig, use_container_width=True)
-                    st.dataframe(explanation['contributions'], use_container_width=True)
+                    st.plotly_chart(fig, width="stretch")
+                    st.dataframe(explanation['contributions'], width="stretch")
             except Exception as exc:
                 st.warning(f'Contribution chart unavailable: {exc}')
 with tab_lab:
@@ -155,19 +155,19 @@ with tab_lab:
     labels = _load_csv('hoto_fraud_labels.csv')
     if comparison is not None:
         st.subheader('Classification comparison')
-        st.dataframe(comparison, use_container_width=True)
+        st.dataframe(comparison, width="stretch")
     if capacity is not None:
         st.subheader('Review capacity')
-        st.dataframe(capacity, use_container_width=True)
+        st.dataframe(capacity, width="stretch")
     if curve_summary is not None:
         st.subheader('Curve summary')
-        st.dataframe(curve_summary, use_container_width=True)
+        st.dataframe(curve_summary, width="stretch")
     st.subheader('Scenarios')
     if registry is not None:
-        st.dataframe(registry, use_container_width=True)
+        st.dataframe(registry, width="stretch")
     if labels is not None:
         summary = labels.groupby(['entity_type', 'scenario_id', 'fraud_label']).size().reset_index(name='count')
-        st.dataframe(summary, use_container_width=True)
+        st.dataframe(summary, width="stretch")
 with tab_sim:
     from hoto.simulation import regional_impact_summary, run_baseline_and_scenario
     from hoto.simulation_charts import budget_pressure_bars, expenditure_comparison_bars, region_impact_cards_html, region_impact_rank_bars, series_baseline_vs_scenario, utilisation_heatmap
@@ -214,18 +214,18 @@ with tab_sim:
         summary = regional_impact_summary(result['comparison'])
         with right:
             st.markdown(region_impact_cards_html(summary), unsafe_allow_html=True)
-            st.plotly_chart(region_impact_rank_bars(summary), use_container_width=True)
+            st.plotly_chart(region_impact_rank_bars(summary), width="stretch")
         c1, c2 = st.columns(2)
         with c1:
-            st.plotly_chart(series_baseline_vs_scenario(result['baseline'], result['scenario'], region=view_region, metric=view_metric), use_container_width=True)
+            st.plotly_chart(series_baseline_vs_scenario(result['baseline'], result['scenario'], region=view_region, metric=view_metric), width="stretch")
         with c2:
-            st.plotly_chart(expenditure_comparison_bars(summary), use_container_width=True)
-        st.plotly_chart(budget_pressure_bars(summary), use_container_width=True)
-        st.plotly_chart(utilisation_heatmap(result['comparison']), use_container_width=True)
+            st.plotly_chart(expenditure_comparison_bars(summary), width="stretch")
+        st.plotly_chart(budget_pressure_bars(summary), width="stretch")
+        st.plotly_chart(utilisation_heatmap(result['comparison']), width="stretch")
         st.subheader('Regional impact summary')
-        st.dataframe(summary, use_container_width=True)
+        st.dataframe(summary, width="stretch")
         st.subheader('Month-by-region comparison')
         show_cols = [c for c in result['comparison'].columns if c.startswith(('month', 'region', 'baseline_', 'scenario_', 'abs_change_', 'pct_change_'))]
-        st.dataframe(result['comparison'][show_cols], use_container_width=True)
+        st.dataframe(result['comparison'][show_cols], width="stretch")
         st.subheader('Derived monthly baselines')
-        st.dataframe(result['baselines'], use_container_width=True)
+        st.dataframe(result['baselines'], width="stretch")
