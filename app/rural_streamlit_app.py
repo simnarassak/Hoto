@@ -11,14 +11,16 @@ from hoto_rural import config
 from hoto_rural.charts import (
     category_bars,
     dual_axis_story,
+    food_market_month_chart,
     forecast_fan_chart,
     labour_grouped_bars,
+    labour_match_chart,
     simple_line,
     stress_heatmap,
 )
 from hoto_rural.monte_carlo import build_forecast_bundle
 from hoto_rural.schema import SCENARIO_NAMES
-from hoto_rural.simulate import run_monthly_simulation
+from hoto_rural.simulate import run_monthly_simulation, summer_month_summary
 from hoto_rural.world import build_water_body, generate_rural_world, load_world, save_world
 
 DATA_DIR = ROOT / "data" / "rural"
@@ -72,8 +74,8 @@ st.caption(
     f"· farms={world['meta']['n_farms']} · history {config.HISTORY_MONTHS}m + forecast {config.FORECAST_MONTHS}m"
 )
 
-tab_home, tab_loop, tab_econ, tab_water, tab_lab = st.tabs(
-    ["Overview", "Linked loop", "Economics", "Freshwater", "Scenario Lab"]
+tab_home, tab_loop, tab_market, tab_econ, tab_water, tab_lab = st.tabs(
+    ["Overview", "Linked loop", "Markets by month", "Economics", "Freshwater", "Scenario Lab"]
 )
 
 with tab_home:
@@ -151,6 +153,64 @@ with tab_loop:
         width="stretch",
     )
     st.plotly_chart(labour_grouped_bars(loop, "Labour demand follows water/season"), width="stretch")
+
+with tab_market:
+    st.subheader("Month-wise supply and demand")
+    st.caption(
+        "Household food demand vs local supply, shop stock, import/export, and labour matching. "
+        "Yellow bands mark southern-hemisphere summer (Dec–Feb)."
+    )
+    market = run_monthly_simulation(
+        world, scenario="baseline", n_months=36, seed=config.RANDOM_SEED, history=True
+    )
+    summer = summer_month_summary(market)
+    s1, s2, s3, s4 = st.columns(4)
+    s1.metric("Summer irrig (avg m3)", f"{summer['summer_irrig_m3']:,.0f}")
+    s2.metric("Other irrig (avg m3)", f"{summer['other_irrig_m3']:,.0f}")
+    s3.metric("Summer seasonal labour demand", f"{summer['summer_labour_demand']:,.0f}")
+    s4.metric("Other seasonal labour demand", f"{summer['other_labour_demand']:,.0f}")
+    st.plotly_chart(
+        food_market_month_chart(market, "Food: local supply, demand, import, export"),
+        width="stretch",
+    )
+    st.plotly_chart(
+        labour_match_chart(market, "Labour: seasonal demand vs employed (unmet in red)"),
+        width="stretch",
+    )
+    m1, m2 = st.columns(2)
+    with m1:
+        st.plotly_chart(
+            simple_line(market, "month", "retail_stock_t", "Shop / supermarket stock (t)", color="#B45309"),
+            width="stretch",
+        )
+    with m2:
+        st.plotly_chart(
+            simple_line(market, "month", "food_price_index", "Food price index", color="#C62828"),
+            width="stretch",
+        )
+    show_summer_only = st.checkbox("Show summer months only in table", value=False)
+    table = market.loc[market["is_summer"] == 1] if show_summer_only else market
+    st.dataframe(
+        table[
+            [
+                "month",
+                "calendar_month",
+                "is_summer",
+                "storage_m3",
+                "water_stress_index",
+                "local_food_supply_t",
+                "food_demand_t",
+                "food_import_t",
+                "food_export_t",
+                "retail_stock_t",
+                "labour_demand_seasonal",
+                "labour_employed_seasonal",
+                "labour_unmet_total",
+                "farm_profit",
+            ]
+        ],
+        width="stretch",
+    )
 
 with tab_econ:
     baseline = run_monthly_simulation(

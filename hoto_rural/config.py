@@ -22,6 +22,24 @@ BASE_RAINFALL_MM = 84.0
 CATCHMENT_AREA_M2 = 88_000_000.0
 RUNOFF_COEFFICIENT = 0.26
 HOUSEHOLD_WATER_M3_PER_PERSON = 0.35
+FOOD_KG_PER_PERSON_MONTH = 45.0
+FOOD_STOCK_TARGET_MONTHS = 1.0
+LOCAL_FOOD_SHARE = 0.16
+SUMMER_MONTHS = (11, 0, 1)
+MONTH_NAMES = (
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+)
 DATA_DIR = Path("data") / "rural"
 
 SCENARIO_PARAMS = {

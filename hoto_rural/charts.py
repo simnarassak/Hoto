@@ -278,6 +278,97 @@ def rural_water_snapshot(water_bodies, title="Rural freshwater and river"):
     return _base_layout(fig, title, height=320)
 
 
+def food_market_month_chart(frame, title="Food supply, demand, import and export"):
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=frame["month"],
+            y=frame["local_food_supply_t"],
+            name="Local supply",
+            line=dict(color=COLORS["nutrient"], width=3),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=frame["month"],
+            y=frame["food_demand_t"],
+            name="Household demand",
+            line=dict(color=COLORS["ink"], width=3, dash="dash"),
+        )
+    )
+    fig.add_trace(
+        go.Bar(
+            x=frame["month"],
+            y=frame["food_import_t"],
+            name="Import",
+            marker_color="#F59E0B",
+            opacity=0.75,
+        )
+    )
+    fig.add_trace(
+        go.Bar(
+            x=frame["month"],
+            y=frame["food_export_t"],
+            name="Export",
+            marker_color="#0284C7",
+            opacity=0.75,
+        )
+    )
+    summers = frame.loc[frame["is_summer"] == 1, "month"].tolist()
+    for i, month in enumerate(summers):
+        fig.add_vrect(
+            x0=month - 0.5,
+            x1=month + 0.5,
+            fillcolor="rgba(251, 191, 36, 0.12)",
+            line_width=0,
+            annotation_text="summer" if i == 0 else None,
+            annotation_position="top left",
+        )
+    fig.update_layout(barmode="overlay")
+    fig = _base_layout(fig, title, height=400)
+    fig.update_xaxes(title_text="Month")
+    fig.update_yaxes(title_text="Tonnes")
+    return fig
+
+
+def labour_match_chart(frame, title="Labour demand vs employed (seasonal)"):
+    fig = go.Figure()
+    fig.add_trace(
+        go.Scatter(
+            x=frame["month"],
+            y=frame["labour_demand_seasonal"],
+            name="Demand",
+            line=dict(color=COLORS["labour"], width=3),
+        )
+    )
+    fig.add_trace(
+        go.Scatter(
+            x=frame["month"],
+            y=frame["labour_employed_seasonal"],
+            name="Employed",
+            line=dict(color="#A78BFA", width=3, dash="dot"),
+        )
+    )
+    fig.add_trace(
+        go.Bar(
+            x=frame["month"],
+            y=frame["labour_unmet_seasonal"],
+            name="Unmet",
+            marker_color=COLORS["stress"],
+            opacity=0.55,
+        )
+    )
+    summers = frame.loc[frame["is_summer"] == 1, "month"].tolist()
+    for month in summers:
+        fig.add_vrect(
+            x0=month - 0.5,
+            x1=month + 0.5,
+            fillcolor="rgba(251, 191, 36, 0.10)",
+            line_width=0,
+        )
+    return _base_layout(fig, title, height=380)
+
+
 def rural_home_metrics(people, farms, water_bodies):
     water = water_bodies.iloc[0]
     farm_roles = {"permanent_farm", "seasonal_farm", "immigrant_farm"}

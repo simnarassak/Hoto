@@ -107,7 +107,16 @@ with tab_home:
             st.plotly_chart(rural_water_snapshot(rural_water), width="stretch")
         with rc2:
             st.plotly_chart(rural_labour_roles(rural_people), width="stretch")
-            if rural_history is not None:
+            if rural_history is not None and 'local_food_supply_t' in rural_history.columns:
+                from hoto_rural.charts import food_market_month_chart
+                st.plotly_chart(
+                    food_market_month_chart(
+                        rural_history,
+                        'Rural food market by month (summer shaded)',
+                    ),
+                    width="stretch",
+                )
+            elif rural_history is not None:
                 st.plotly_chart(
                     simple_line(
                         rural_history,

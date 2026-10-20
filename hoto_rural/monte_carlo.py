@@ -24,6 +24,7 @@ def run_monte_carlo(
     seed=None,
     start_storage=None,
     start_food_price_index=None,
+    start_retail_stock=None,
     month_offset=None,
 ):
     n_paths = config.N_MONTE_CARLO if n_paths is None else n_paths
@@ -40,6 +41,7 @@ def run_monte_carlo(
             history=False,
             start_storage=start_storage,
             start_food_price_index=start_food_price_index,
+            start_retail_stock=start_retail_stock,
             month_offset=month_offset,
         )
         frame = frame.copy()
@@ -67,6 +69,7 @@ def build_forecast_bundle(world, scenario="drought", value_col="storage_m3", n_p
     history = run_history(world, seed=seed)
     start_storage = float(history.iloc[-1]["storage_m3"])
     start_price = float(history.iloc[-1]["food_price_index"])
+    start_stock = float(history.iloc[-1]["retail_stock_t"])
     paths = run_monte_carlo(
         world,
         scenario=scenario,
@@ -74,19 +77,27 @@ def build_forecast_bundle(world, scenario="drought", value_col="storage_m3", n_p
         seed=seed,
         start_storage=start_storage,
         start_food_price_index=start_price,
+        start_retail_stock=start_stock,
         month_offset=int(history["month"].max()),
     )
     summary = summarise_paths(paths, value_col=value_col)
     last = paths["month"].max()
     median_by_month = paths.groupby("month", as_index=False).agg(
         crop_supply=("crop_supply_t", "median"),
+        local_food_supply=("local_food_supply_t", "median"),
+        food_demand=("food_demand_t", "median"),
+        food_import=("food_import_t", "median"),
+        food_export=("food_export_t", "median"),
+        retail_stock=("retail_stock_t", "median"),
         food_price_index=("food_price_index", "median"),
         labour_demand_seasonal=("labour_demand_seasonal", "median"),
         immigrant_labour_demand=("labour_demand_immigrant", "median"),
+        labour_unmet_total=("labour_unmet_total", "median"),
         water_stress_index=("water_stress_index", "median"),
         nutrient_exceedance=("nutrient_exceedance", "mean"),
         farm_profit=("farm_profit", "median"),
         subsidy_need=("subsidy_need", "median"),
+        is_summer=("is_summer", "max"),
     )
     median_by_month.insert(0, "region_id", "Rural")
     threshold_prob = float(
