@@ -1,11 +1,10 @@
 ---
 Title: Hoto Claims Risk Demo
-sdk: gradio
-sdk_version: 4.44.1
 app_file: app.py
 pinned: false
 license: mit
 short_description: Synthetic claims risk triage demo (ensemble, rules, provider risk)
+Tech Stack: Python, Streamlit, XGBoost, scikit-learn, SHAP and Plotly
 ---
 
 # Hoto — Synthetic Claims Risk Platform
