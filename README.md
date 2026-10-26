@@ -1,5 +1,5 @@
 ---
-title: Hoto Claims Risk Demo
+Title: Hoto Claims Risk Demo
 sdk: gradio
 sdk_version: 4.44.1
 app_file: app.py
@@ -13,6 +13,12 @@ short_description: Synthetic claims risk triage demo (ensemble, rules, provider 
 Public sandbox for exploring synthetic claims risk scoring. Data and labels are
 fully synthetic. Model scores are for triage demos and learning — not proof of
 fraud or real claim decisions.
+
+## Screenshots
+
+### Hoto – Main Dashboard
+
+### Explainability Lab
 
 ## App structure
 
