@@ -3,143 +3,114 @@
 
 **Tech stack:** Python, Streamlit, XGBoost, scikit-learn, SHAP, Plotly
 
-Hoto is an interactive sandbox for exploring synthetic claims risk scoring, model explainability, claims analytics, and scenario-based decision support.
+**Live demo:** [Hoto-Sims](https://hoto-sims.streamlit.app/)
 
-The platform brings together claims analytics, risk triage, provider-risk aggregation, model interpretation, and regional impact simulation in an interactive application.
+Hoto-Sims is an interactive application for exploring synthetic claims risk scoring, model explainability, claims analytics, and risk-based triage workflows.
 
-> **Important:** All claims data and labels are synthetic. Model scores are intended for demonstration, experimentation, and learning. They are not proof of fraud and must not be used to make real-world claim decisions.
+The platform combines machine learning, transparent rule-based indicators, provider-risk analysis, and interactive visualisations to demonstrate how analytical tools can support risk assessment and review prioritisation.
 
-**Live demo:** [Hoto Claims Risk Platform](https://hoto-sims.streamlit.app/)
+> **Important:** All claims data and labels are synthetic. Model scores are intended for demonstration and learning. They are not proof of fraud and must not be used to make real-world claims decisions.
 
 ## Screenshots
 
-### Hoto — Main Analytics Dashboard
+### Hoto — Main Dashboard
 
 ![Hoto Main Dashboard](images/Page1.png)
 
-The dashboard explores synthetic population, demographic, employment, and claims data through interactive visualisations.
+Explore synthetic population, demographic, employment, and claims data through interactive visualisations.
 
-### Hoto — Regional Scenario Simulation
+### Hoto — Simulation Lab
 
-![Hoto Scenario Simulation](images/Page2.png)
+![Hoto Simulation Lab](images/Page2.png)
 
-The simulation lab allows users to explore hypothetical regional demand changes, capacity constraints, and associated cost pressures under configurable scenarios.
+Explore hypothetical regional demand, capacity constraints, and cost pressures using configurable scenario parameters.
 
 ## Key Features
 
-### 1. Claims Risk Triage
+### 1. Ensemble Claims Risk Scoring
 
-- Ensemble risk scoring using XGBoost, logistic regression, and anomaly detection.
-- Configurable risk thresholds and top-N review selection.
-- Risk prioritisation to support investigation workflows.
-- Provider-risk aggregation and visualisation.
+- Combines XGBoost, logistic regression, and anomaly detection.
+- Supports risk-based prioritisation of claims for review.
+- Enables exploration of configurable risk thresholds and top-N review queues.
+- Provides a foundation for examining patterns in synthetic claims data.
 
 ### 2. Transparent Rule-Based Indicators
 
-Rule-based indicators highlight potentially unusual patterns, including:
+Highlights potentially unusual patterns through rules such as:
 
 - High-frequency claims activity.
 - Duplicate-like claim signatures.
 - Unusual provider claim amounts.
 
-These indicators support exploration and review. They do not establish that a claim is fraudulent.
+Rule hits are indicators for further examination, not proof of fraudulent activity.
 
-### 3. Model Explainability
+### 3. Provider-Risk Analysis
+
+Aggregates claims-related risk indicators at provider level to support exploration of patterns across providers and claims.
+
+### 4. Model Explainability
 
 - Individual claim contribution visualisations.
-- SHAP-based explanations where implemented.
+- SHAP-based explanations where supported by the selected model.
 - Feature-level investigation of model outputs.
-- Interactive exploration of selected claims and risk scores.
 
-Explanations describe how model features contribute to a prediction; they do not establish causation or prove fraudulent behaviour.
+Explanations help users understand model behaviour but do not establish causation or prove fraud.
 
-### 4. Model Evaluation
+### 5. Model Evaluation and Review Capacity
 
-The model lab supports exploration of model performance and risk-scoring scenarios.
+Supports exploration of model performance, risk thresholds, and the number of records selected for review.
 
-Evaluation should consider metrics appropriate to imbalanced classification, including average precision, alongside the operational capacity available for reviewing flagged cases.
+For imbalanced classification, evaluation should consider metrics such as average precision alongside the practical capacity available to investigate flagged records.
 
-### 5. Claims and Population Analytics
+### 6. Interactive Analytics Dashboard
 
-Interactive dashboards explore synthetic population characteristics, claims activity over time, claim types, and demographic distributions.
+Provides visual exploration of synthetic claims, population characteristics, demographic distributions, and trends.
 
-### 6. Regional Scenario Simulation
+### 7. Scenario Simulation
 
-The simulation lab provides a rules-based sandbox for exploring hypothetical changes in regional claims demand and operational capacity.
+The Simulation Lab provides a synthetic, rules-based environment for examining hypothetical regional demand and capacity changes.
 
-Users can configure scenario parameters such as:
+Users can explore scenario parameters and compare estimated outcomes against a baseline.
 
-- Hazard or stress scenario.
-- Stress shock.
-- Capacity mode.
-- Simulation horizon.
-- Stress-to-demand relationship.
-- Prevention budget adjustment.
-- Time-series metric and region of interest.
-
-Outputs include regional demand changes and estimated cost pressures relative to a baseline.
-
-**Simulation limitation:** This is a synthetic, rules-based scenario model, not a validated machine learning forecast or a prediction of actual claims expenditure.
+**Simulation limitation:** Scenario outputs are exploratory and rules-based. They are not validated forecasts of actual claims demand or expenditure.
 
 ## Application Structure
 
-The application is organised into the following areas:
+The application includes the following areas:
 
-1. **Home** — Hoto overview and synthetic claims environment.
+1. **Home** — Overview of the Hoto environment and its synthetic data.
 2. **Risk Lab** — Ensemble risk scoring, review thresholds, and provider-risk analysis.
-3. **Case Explain** — Claim-level investigation, timelines, and contribution visualisations.
-4. **Model Lab** — Model evaluation and risk-scoring experiments.
-5. **Simulation** — Regional hazard, demand, and capacity scenarios.
+3. **Case Explain** — Claim timelines and model contribution visualisations.
+4. **Model Lab** — Model evaluation and scenario exploration.
+5. **Simulation** — Regional hazard, demand, and capacity analysis.
 
-The exact navigation and available features depend on the currently deployed application version.
-
-## Hoto Rural — Independent MVP
-
-Hoto Rural is a separate prototype exploring regional microeconomic and freshwater scenarios.
-
-Its modules include:
-
-- Economics.
-- Freshwater.
-- Scenario Lab with Monte Carlo simulation.
-
-The conceptual feedback loop connects:
-
-**Water → Crops and livestock → Manure and nutrients → Profit and labour**
-
-This module explores relationships between environmental resources and agricultural activity through scenario-based modelling. Its outputs should be interpreted as exploratory simulations rather than validated forecasts.
-
-Run the rural module using the commands below, provided the corresponding module and file paths exist in your checkout:
-
-```bash
-python -m hoto_rural
-streamlit run app/rural_streamlit_app.py
-```
+Available features may vary with the deployed application version.
 
 ## Project Layout
 
 ```text
 Hoto/
 ├── hoto/
-├── hoto_rural/
 ├── app/
-│   ├── streamlit_app.py
-│   └── rural_streamlit_app.py
+│   └── streamlit_app.py
 ├── app.py
 ├── hoto_pipeline.py
 ├── requirements.txt
 ├── data/
-│   └── rural/
-└── models/
+├── models/
+├── images/
+│   ├── Page1.png
+│   └── Page2.png
+└── README.md
 ```
 
-This layout describes the main project components. Additional files, datasets, and model artefacts may exist in the repository.
+This is an illustrative layout based on the files and folders described in the project documentation. Keep it aligned with the actual repository structure.
 
 ## Getting Started
 
 ### Prerequisites
 
-- Python version compatible with the dependencies in `requirements.txt`.
+- Python compatible with the dependencies in `requirements.txt`.
 - Git.
 - A local copy of the repository.
 
@@ -156,7 +127,7 @@ cd Hoto
 python -m venv .venv
 ```
 
-Activate it using the command appropriate for your operating system.
+Activate the environment using the command for your operating system.
 
 **Windows — Command Prompt**
 
@@ -185,39 +156,39 @@ python -m pip install -r requirements.txt
 
 ### 4. Run the application
 
-If `app/streamlit_app.py` is the main application entry point:
+If `app/streamlit_app.py` is the main entry point:
 
 ```bash
 streamlit run app/streamlit_app.py
 ```
 
-If your project uses `app.py` as its entry point instead, run:
+If the deployed application instead uses `app.py`, run:
 
 ```bash
 streamlit run app.py
 ```
 
-Use the entry point that matches the current deployed version.
+Use the entry point configured for the current version of Hoto-Sims.
 
 ## Model Training
 
-If the repository's training module is available, train the models using:
+If the training module and command-line interface are available in your checkout, run:
 
 ```bash
 python -m hoto
 ```
 
-For a smaller demonstration dataset, if supported by the current implementation:
+For a smaller demonstration dataset, if supported:
 
 ```bash
 python -m hoto --demo
 ```
 
-Verify the expected data and model paths before running training. The commands above assume the relevant command-line options are implemented in the project.
+Confirm that these commands and options are implemented before using them. Training requirements may differ from those needed to run the deployed application.
 
 ## Inference API
 
-The following example illustrates the project's Python inference interface:
+The project provides a Python inference interface for loading claim models and scoring feature data.
 
 ```python
 from hoto.infer import load_claim_models, score_claims
@@ -237,42 +208,43 @@ scored = score_claims(
 print(scored.head())
 ```
 
-The example assumes the referenced module, files, and function signatures are available in the repository. Input data must follow the feature schema expected by the inference pipeline.
+This example assumes the module, functions, and CSV files match the current repository implementation. Input columns must conform to the schema expected by the inference pipeline.
 
 ## Responsible AI and Design Considerations
 
-Hoto is a demonstration platform. Its design notes include the following principles:
+Hoto-Sims is a synthetic demonstration platform. Its documented design considerations include:
 
-- **Synthetic data:** Claims and labels are generated for experimentation, not obtained from actual fraud investigations.
-- **Sensitive attributes:** Sensitive demographic attributes are kept out of model features.
-- **Leakage prevention:** Grouped train/test splits are intended to reduce person- or claim-level data leakage.
-- **Appropriate evaluation:** Average precision and review capacity are considered alongside classification metrics and thresholds.
-- **Human review:** Risk scores and rule hits should inform further examination, not replace investigation or establish guilt.
-- **Explainability:** Feature contributions help users examine model behaviour but do not establish causality.
-- **Scenario transparency:** Rules-based simulations are distinguished from machine learning forecasts.
+- **Synthetic data:** Claims and labels are generated for demonstration and experimentation.
+- **Sensitive attributes:** Sensitive demographic attributes are excluded from model features.
+- **Leakage prevention:** Grouped train/test splits are used to reduce person- or claim-level data leakage.
+- **Appropriate evaluation:** Average precision and review capacity are considered alongside model thresholds.
+- **Human review:** Risk scores and rule hits are intended to support further examination rather than replace investigation.
+- **Explainability:** Feature contributions help users investigate model behaviour but do not establish causality.
+- **Scenario transparency:** Rules-based scenario simulation is distinguished from machine learning forecasting.
 
-These design choices do not, by themselves, establish that the models are unbiased, production-ready, or suitable for real claims decisions. Any real-world deployment would require further validation, privacy and security assessment, governance, monitoring, and domain-expert review.
+These design considerations do not, by themselves, establish that a model is unbiased or suitable for real-world deployment. Real claims applications would require additional validation, privacy and security assessments, governance, monitoring, and domain-expert review.
 
 ## Deployment
 
-The public demonstration is hosted on Streamlit Community Cloud:
+Hoto-Sims is available through Streamlit Community Cloud:
 
-**Application:** [https://hoto-sims.streamlit.app/](https://hoto-sims.streamlit.app/)
+**Live application:** [https://hoto-sims.streamlit.app/](https://hoto-sims.streamlit.app/)
 
-For a Streamlit Community Cloud deployment:
+For deployment or maintenance:
 
-1. Connect the GitHub repository.
-2. Select the branch to deploy.
-3. Set the main application file to the actual Streamlit entry point.
-4. Configure any required secrets and dependencies.
-5. Deploy and verify the application.
+1. Connect the GitHub repository to Streamlit Community Cloud.
+2. Select the appropriate branch.
+3. Configure the correct main application file.
+4. Ensure the required dependencies are specified in `requirements.txt`.
+5. Configure any required secrets.
+6. Deploy and verify the application.
 
-The deployed version may differ from the current local development version.
+The deployed application may differ from the current local development version.
 
-## Purpose
+## Project Purpose
 
-Hoto is a personal project exploring how machine learning, explainability, interactive analytics, and scenario simulation can be combined in a single application.
+Hoto-Sims is a personal AI and data science project exploring the integration of machine learning, explainability, risk analytics, and interactive decision-support visualisations.
 
-It demonstrates practical development across data processing, model inference, visualisation, risk analysis, and interactive decision-support interfaces.
+It demonstrates practical development across data processing, model inference, analytical dashboards, risk prioritisation, and scenario exploration.
 
 The platform uses synthetic data and is intended for learning, technical demonstration, and portfolio purposes.
