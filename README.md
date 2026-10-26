@@ -18,7 +18,11 @@ fraud or real claim decisions.
 
 ### Hoto – Main Dashboard
 
-### Explainability Lab
+![Hoto Main Dashboard](images/Page1.png)
+
+### Simulation Lab
+
+![Simulation](images/Page2.png)
 
 ## App structure
 
