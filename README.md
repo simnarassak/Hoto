@@ -22,7 +22,7 @@ fraud or real claim decisions.
 
 ### Simulation Lab
 
-![Simulation](images/Page2.png)
+![Hoto simulation lab](images/Page2.png)
 
 ## App structure
 
